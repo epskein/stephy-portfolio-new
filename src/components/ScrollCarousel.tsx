@@ -8,8 +8,8 @@ import Image from "next/image";
 const images = [
   "StephyLongueira15.jpg", "StephyLongueira21.jpg", 
   "StephyLongueira22.jpg", "StephyLongueira29.jpg", "StephyLongueira31.jpg",
-  "StephyLongueira15.jpg", "StephyLongueira21.jpg", 
-  "StephyLongueira22.jpg", "StephyLongueira29.jpg", "StephyLongueira31.jpg",
+  "StephyLongueira1.jpg", "StephyLongueira2.jpg", 
+  "StephyLongueira14.jpg", "StephyLongueira9.jpg", "StephyLongueira15.jpg",
 ];
 
 // Split images into two rows
