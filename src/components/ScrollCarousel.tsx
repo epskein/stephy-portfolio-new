@@ -2,29 +2,19 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 
-// Placeholder images - will be replaced with actual images
-const topRowImages = [
-  { id: 1, placeholder: "Image 1" },
-  { id: 2, placeholder: "Image 2" },
-  { id: 3, placeholder: "Image 3" },
-  { id: 4, placeholder: "Image 4" },
-  { id: 5, placeholder: "Image 5" },
-  { id: 6, placeholder: "Image 6" },
-  { id: 7, placeholder: "Image 7" },
-  { id: 8, placeholder: "Image 8" },
+// Actual images from public/assets/
+const images = [
+  "StephyLongueira15.jpg", "StephyLongueira21.jpg", 
+  "StephyLongueira22.jpg", "StephyLongueira29.jpg", "StephyLongueira31.jpg",
+  "StephyLongueira15.jpg", "StephyLongueira21.jpg", 
+  "StephyLongueira22.jpg", "StephyLongueira29.jpg", "StephyLongueira31.jpg",
 ];
 
-const bottomRowImages = [
-  { id: 9, placeholder: "Image 9" },
-  { id: 10, placeholder: "Image 10" },
-  { id: 11, placeholder: "Image 11" },
-  { id: 12, placeholder: "Image 12" },
-  { id: 13, placeholder: "Image 13" },
-  { id: 14, placeholder: "Image 14" },
-  { id: 15, placeholder: "Image 15" },
-  { id: 16, placeholder: "Image 16" },
-];
+// Split images into two rows
+const topRowImages = images.slice(0, 5);
+const bottomRowImages = images.slice(5);
 
 export default function ScrollCarousel() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,71 +25,72 @@ export default function ScrollCarousel() {
   });
 
   // Top row moves left as you scroll down
-  const topRowX = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
+  const topRowX = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
   // Bottom row moves right as you scroll down
-  const bottomRowX = useTransform(scrollYProgress, [0, 1], ["-50%", "0%"]);
+  const bottomRowX = useTransform(scrollYProgress, [0, 1], ["-30%", "0%"]);
 
   return (
     <section
       ref={containerRef}
-      className="relative py-20 overflow-hidden bg-muted/30"
+      className="relative py-24 overflow-hidden bg-black"
     >
       {/* Section title */}
-      <div className="container mx-auto px-6 mb-12">
+      <div className="container mx-auto px-6 mb-16">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-3xl md:text-4xl font-bold text-center"
+          className="text-3xl md:text-4xl font-black text-center tracking-tight"
         >
           <span className="gradient-text">MOMENTS</span>
-          <span className="text-foreground ml-3">CAPTURED</span>
+          <span className="text-white ml-4">CAPTURED</span>
         </motion.h2>
       </div>
 
-      {/* Top Row - scrolls left */}
-      <motion.div style={{ x: topRowX }} className="flex gap-4 mb-4">
-        {[...topRowImages, ...topRowImages].map((image, index) => (
-          <div
-            key={`top-${index}`}
-            className="relative flex-shrink-0 w-64 h-40 md:w-80 md:h-52 rounded-lg overflow-hidden group"
-          >
-            {/* Placeholder - replace with actual Image component */}
-            <div className="w-full h-full bg-gradient-to-br from-accent/10 to-accent-secondary/10 flex items-center justify-center border border-white/5">
-              <span className="text-muted-foreground text-xs uppercase tracking-widest">
-                {image.placeholder}
-              </span>
+      <div className="flex flex-col gap-6 md:gap-8">
+        {/* Top Row - scrolls left */}
+        <motion.div style={{ x: topRowX }} className="flex gap-4 md:gap-6 whitespace-nowrap">
+          {[...topRowImages, ...topRowImages].map((img, index) => (
+            <div
+              key={`top-${index}`}
+              className="relative flex-shrink-0 w-[300px] h-[200px] md:w-[450px] md:h-[300px] rounded-[2rem] overflow-hidden group border border-white/5"
+            >
+              <Image
+                src={`/assets/${img}`}
+                alt={`Stephy Longueira Performance ${index}`}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                sizes="(max-width: 768px) 300px, 450px"
+              />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
             </div>
-            {/* Hover overlay */}
-            <div className="absolute inset-0 bg-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </div>
-        ))}
-      </motion.div>
+          ))}
+        </motion.div>
 
-      {/* Bottom Row - scrolls right */}
-      <motion.div style={{ x: bottomRowX }} className="flex gap-4">
-        {[...bottomRowImages, ...bottomRowImages].map((image, index) => (
-          <div
-            key={`bottom-${index}`}
-            className="relative flex-shrink-0 w-64 h-40 md:w-80 md:h-52 rounded-lg overflow-hidden group"
-          >
-            {/* Placeholder - replace with actual Image component */}
-            <div className="w-full h-full bg-gradient-to-br from-accent-secondary/10 to-accent/10 flex items-center justify-center border border-white/5">
-              <span className="text-muted-foreground text-xs uppercase tracking-widest">
-                {image.placeholder}
-              </span>
+        {/* Bottom Row - scrolls right */}
+        <motion.div style={{ x: bottomRowX }} className="flex gap-4 md:gap-6 whitespace-nowrap">
+          {[...bottomRowImages, ...bottomRowImages].map((img, index) => (
+            <div
+              key={`bottom-${index}`}
+              className="relative flex-shrink-0 w-[300px] h-[200px] md:w-[450px] md:h-[300px] rounded-[2rem] overflow-hidden group border border-white/5"
+            >
+              <Image
+                src={`/assets/${img}`}
+                alt={`Stephy Longueira Moment ${index}`}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                sizes="(max-width: 768px) 300px, 450px"
+              />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
             </div>
-            {/* Hover overlay */}
-            <div className="absolute inset-0 bg-accent-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </div>
-        ))}
-      </motion.div>
+          ))}
+        </motion.div>
+      </div>
 
       {/* Gradient overlays for fade effect */}
-      <div className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-      <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 left-0 w-32 md:w-64 h-full bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-32 md:w-64 h-full bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
     </section>
   );
 }
-

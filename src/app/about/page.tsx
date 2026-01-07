@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function AboutPage() {
   return (
@@ -20,10 +21,14 @@ export default function AboutPage() {
               transition={{ duration: 0.8 }}
               className="relative"
             >
-              <div className="aspect-[3/4] rounded-[3rem] overflow-hidden bg-white/5 border border-white/10 flex items-center justify-center">
-                <span className="text-muted-foreground text-[10px] uppercase tracking-[0.3em]">
-                  Artist Portfolio
-                </span>
+              <div className="aspect-[3/4] rounded-[3rem] overflow-hidden bg-white/5 border border-white/10 relative">
+                <Image
+                  src="/assets/StephyLongueira6.jpg"
+                  alt="Stephy Longueira"
+                  fill
+                  className="object-cover object-top"
+                  priority
+                />
               </div>
               {/* Decorative elements - rounded */}
               <div className="absolute -bottom-6 -right-6 w-32 h-32 border border-white/10 rounded-[2.5rem] -z-10" />
