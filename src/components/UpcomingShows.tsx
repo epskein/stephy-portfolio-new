@@ -10,7 +10,6 @@ const upcomingShows = [
     venue: "Club Pacha",
     location: "Ibiza, Spain",
     time: "23:00",
-    ticketLink: "#",
   },
   {
     id: 2,
@@ -18,7 +17,6 @@ const upcomingShows = [
     venue: "Fabric",
     location: "London, UK",
     time: "22:00",
-    ticketLink: "#",
   },
   {
     id: 3,
@@ -26,7 +24,6 @@ const upcomingShows = [
     venue: "Berghain",
     location: "Berlin, Germany",
     time: "00:00",
-    ticketLink: "#",
   },
   {
     id: 4,
@@ -34,7 +31,6 @@ const upcomingShows = [
     venue: "Output",
     location: "New York, USA",
     time: "22:00",
-    ticketLink: "#",
   },
 ];
 
@@ -50,11 +46,11 @@ export default function UpcomingShows() {
   return (
     <section id="upcoming-shows" className="relative py-24 bg-background">
       {/* Background pattern */}
-      <div className="absolute inset-0 opacity-5">
+      <div className="absolute inset-0 opacity-[0.03]">
         <div
           className="w-full h-full"
           style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
+            backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
             backgroundSize: "40px 40px",
           }}
         />
@@ -73,63 +69,56 @@ export default function UpcomingShows() {
             <span className="gradient-text">UPCOMING</span>
             <span className="text-foreground ml-3">SHOWS</span>
           </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Catch Stephy live at these upcoming events. Get your tickets before they sell out.
+          <p className="text-muted-foreground max-w-xl mx-auto uppercase tracking-widest text-[10px]">
+            Catch Stephy live at these upcoming events worldwide.
           </p>
         </motion.div>
 
         {/* Shows Grid */}
-        <div className="max-w-4xl mx-auto space-y-4">
+        <div className="max-w-4xl mx-auto space-y-6">
           {upcomingShows.map((show, index) => {
             const { day, month } = formatDate(show.date);
             return (
               <motion.div
                 key={show.id}
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ y: -4 }}
                 className="group relative"
               >
-                <div className="glass rounded-xl p-6 flex flex-col md:flex-row items-start md:items-center gap-6 hover:border-accent/50 transition-colors">
+                <div className="relative bg-white/[0.03] border border-white/10 rounded-none p-8 md:p-10 flex flex-col md:flex-row items-start md:items-center gap-8 transition-all duration-500 group-hover:bg-white/[0.06] group-hover:border-white/20 group-hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]">
                   {/* Date */}
-                  <div className="flex-shrink-0 text-center min-w-[80px]">
-                    <div className="text-4xl font-black text-accent">{day}</div>
-                    <div className="text-sm font-semibold text-muted-foreground tracking-widest">
+                  <div className="flex-shrink-0 text-center min-w-[100px] border-r border-white/10 md:pr-8">
+                    <div className="text-5xl font-black text-white mb-1">{day}</div>
+                    <div className="text-xs font-bold text-muted-foreground tracking-[0.3em]">
                       {month}
                     </div>
                   </div>
 
-                  {/* Divider */}
-                  <div className="hidden md:block w-px h-16 bg-border" />
-
                   {/* Venue Info */}
-                  <div className="flex-grow">
-                    <h3 className="text-xl font-bold text-foreground group-hover:text-accent transition-colors">
+                  <div className="flex-grow md:pl-4">
+                    <h3 className="text-2xl font-bold text-white mb-2 tracking-tight">
                       {show.venue}
                     </h3>
-                    <p className="text-muted-foreground text-sm">
-                      {show.location}
-                    </p>
-                    <p className="text-accent-secondary text-xs mt-1">
-                      {show.time}
-                    </p>
+                    <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-6">
+                      <p className="text-muted-foreground text-xs uppercase tracking-widest flex items-center gap-2">
+                        <span className="w-1 h-1 bg-white/40 rounded-full" />
+                        {show.location}
+                      </p>
+                      <p className="text-white/60 text-xs uppercase tracking-widest flex items-center gap-2">
+                        <span className="w-1 h-1 bg-white/40 rounded-full" />
+                        {show.time}
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Ticket Button */}
-                  <motion.a
-                    href={show.ticketLink}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="px-6 py-3 bg-accent text-background text-sm font-semibold uppercase tracking-widest rounded-full hover:bg-accent/90 transition-colors"
-                  >
-                    Tickets
-                  </motion.a>
+                  {/* Visual Accent */}
+                  <div className="hidden md:block opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <div className="w-8 h-[1px] bg-white/40" />
+                  </div>
                 </div>
-
-                {/* Glow effect on hover */}
-                <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl bg-accent/10" />
               </motion.div>
             );
           })}
@@ -141,30 +130,18 @@ export default function UpcomingShows() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
-          className="text-center mt-12"
+          className="text-center mt-16"
         >
           <a
-            href="#"
-            className="text-accent hover:text-accent-secondary text-sm uppercase tracking-widest transition-colors inline-flex items-center gap-2"
+            href="/contact"
+            className="text-white/40 hover:text-white text-[10px] uppercase tracking-[0.3em] transition-all inline-flex items-center gap-4 group"
           >
-            View All Shows
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
+            <span className="w-8 h-[1px] bg-white/10 group-hover:w-12 group-hover:bg-white/40 transition-all" />
+            Full Tour Schedule
+            <span className="w-8 h-[1px] bg-white/10 group-hover:w-12 group-hover:bg-white/40 transition-all" />
           </a>
         </motion.div>
       </div>
     </section>
   );
 }
-
