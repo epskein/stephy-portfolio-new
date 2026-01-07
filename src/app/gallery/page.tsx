@@ -19,7 +19,8 @@ async function getGalleryData() {
   categories.forEach((category) => {
     const categoryDir = path.join(galleryDir, category);
     const files = fs.readdirSync(categoryDir).filter((file) => {
-      return [".jpg", ".jpeg", ".png", ".webp"].includes(path.extname(file).toLowerCase());
+      const ext = path.extname(file).toLowerCase();
+      return [".jpg", ".jpeg", ".png", ".webp"].includes(ext);
     });
 
     files.forEach((file) => {
