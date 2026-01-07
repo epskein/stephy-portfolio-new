@@ -32,7 +32,10 @@ async function getGalleryData() {
     });
   });
 
-  return { images, categories };
+  // Shuffle the entire images array so "ALL" section is randomized
+  const shuffledImages = [...images].sort(() => Math.random() - 0.5);
+
+  return { images: shuffledImages, categories };
 }
 
 export default async function GalleryPage() {
