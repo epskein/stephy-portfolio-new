@@ -18,7 +18,7 @@ export default function Hero() {
   return (
     <section
       ref={ref}
-      className="relative h-screen flex items-end justify-center overflow-hidden w-full pb-24 md:pb-32"
+      className="relative h-screen flex items-end justify-center overflow-hidden w-full pb-20 md:pb-24"
     >
       {/* Background Image - Full width */}
       <motion.div
@@ -40,7 +40,7 @@ export default function Hero() {
       {/* Noise overlay */}
       <div className="absolute inset-0 noise z-10" />
 
-      {/* Content - Moved to bottom and made smaller to avoid face */}
+      {/* Content - Single line, smaller text, rounded buttons */}
       <motion.div
         style={{ opacity }}
         className="relative z-20 text-center px-6 w-full max-w-5xl"
@@ -49,13 +49,10 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="mb-8"
+          className="mb-10"
         >
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-[0.1em] mb-1 leading-none">
-            <span className="text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">STEPHY</span>
-          </h1>
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-[0.1em] leading-none">
-            <span className="text-white/90 drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">LONGUEIRA</span>
+          <h1 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-[0.2em] leading-none text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+            STEPHY LONGUEIRA
           </h1>
         </motion.div>
 
@@ -69,7 +66,7 @@ export default function Hero() {
             href="/contact"
             whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,1)" }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 bg-white/95 text-black font-bold uppercase tracking-[0.2em] text-[10px] rounded-none transition-all duration-300 min-w-[160px]"
+            className="px-10 py-4 bg-white text-black font-bold uppercase tracking-[0.2em] text-[10px] rounded-full transition-all duration-300 min-w-[180px]"
           >
             Book Now
           </motion.a>
@@ -77,7 +74,7 @@ export default function Hero() {
             href="#upcoming-shows"
             whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,1)", backgroundColor: "rgba(255,255,255,0.05)" }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 border border-white/20 text-white font-bold uppercase tracking-[0.2em] text-[10px] rounded-none transition-all duration-300 backdrop-blur-md min-w-[160px]"
+            className="px-10 py-4 border border-white/20 text-white font-bold uppercase tracking-[0.2em] text-[10px] rounded-full transition-all duration-300 backdrop-blur-md min-w-[180px]"
           >
             Upcoming Shows
           </motion.a>

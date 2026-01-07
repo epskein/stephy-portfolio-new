@@ -67,8 +67,8 @@ export default function GalleryPage() {
                 onClick={() => setActiveCategory(category.id)}
                 className={`px-6 py-3 rounded-full text-sm uppercase tracking-widest font-semibold transition-all ${
                   activeCategory === category.id
-                    ? "bg-accent text-background"
-                    : "border border-border text-muted-foreground hover:border-accent hover:text-accent"
+                    ? "bg-white text-black"
+                    : "border border-border text-muted-foreground hover:border-white hover:text-white"
                 }`}
               >
                 {category.label}
@@ -83,7 +83,7 @@ export default function GalleryPage() {
         <div className="container mx-auto px-6">
           <motion.div
             layout
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           >
             <AnimatePresence mode="popLayout">
               {filteredImages.map((image, index) => (
@@ -95,24 +95,24 @@ export default function GalleryPage() {
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.4, delay: index * 0.05 }}
                   onClick={() => setSelectedImage(image.id)}
-                  className="relative aspect-square rounded-xl overflow-hidden cursor-pointer group"
+                  className="relative aspect-square rounded-[2rem] overflow-hidden cursor-pointer group"
                 >
                   {/* Placeholder - replace with actual Image */}
-                  <div className="w-full h-full bg-gradient-to-br from-accent/10 to-accent-secondary/10 flex items-center justify-center border border-white/5">
+                  <div className="w-full h-full bg-gradient-to-br from-white/5 to-white/10 flex items-center justify-center border border-white/5">
                     <span className="text-muted-foreground text-xs uppercase tracking-widest text-center px-4">
                       {image.placeholder}
                     </span>
                   </div>
 
                   {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                    <span className="text-sm text-foreground font-medium">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-8">
+                    <span className="text-sm text-white font-medium uppercase tracking-widest">
                       {image.placeholder}
                     </span>
                   </div>
 
                   {/* Border glow on hover */}
-                  <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-accent/50 transition-colors duration-300" />
+                  <div className="absolute inset-0 rounded-[2rem] border-2 border-transparent group-hover:border-white/20 transition-colors duration-300" />
                 </motion.div>
               ))}
             </AnimatePresence>
@@ -128,14 +128,14 @@ export default function GalleryPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-50 bg-background/95 backdrop-blur-xl flex items-center justify-center p-6"
+            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex items-center justify-center p-6"
           >
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedImage(null)}
-              className="absolute top-6 right-6 w-12 h-12 rounded-full border border-border flex items-center justify-center text-foreground hover:border-accent hover:text-accent transition-colors"
+              className="absolute top-6 right-6 w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
             >
               <svg
                 className="w-6 h-6"
@@ -157,10 +157,10 @@ export default function GalleryPage() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-4xl max-h-[80vh] w-full aspect-square rounded-2xl overflow-hidden"
+              className="relative max-w-5xl max-h-[85vh] w-full aspect-square rounded-[3rem] overflow-hidden"
             >
               {/* Placeholder - replace with actual Image */}
-              <div className="w-full h-full bg-gradient-to-br from-accent/20 to-accent-secondary/20 flex items-center justify-center border border-white/10">
+              <div className="w-full h-full bg-gradient-to-br from-white/5 to-white/10 flex items-center justify-center border border-white/10">
                 <span className="text-muted-foreground text-lg uppercase tracking-widest">
                   {
                     galleryImages.find((img) => img.id === selectedImage)
@@ -175,4 +175,3 @@ export default function GalleryPage() {
     </main>
   );
 }
-

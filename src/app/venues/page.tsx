@@ -75,11 +75,10 @@ export default function VenuesPage() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
               <span className="gradient-text">FEATURED</span>
               <br />
-              <span className="text-foreground">VENUES</span>
+              <span className="text-white">VENUES</span>
             </h1>
-            <p className="text-muted-foreground max-w-xl mx-auto">
-              Some of the incredible venues where Stephy has brought her unique
-              energy and sound to the dance floor.
+            <p className="text-muted-foreground max-w-xl mx-auto uppercase tracking-widest text-[10px]">
+              The world&apos;s most iconic dance floors.
             </p>
           </motion.div>
         </div>
@@ -89,7 +88,7 @@ export default function VenuesPage() {
       <section className="pb-20">
         <div className="container mx-auto px-6">
           {/* Main Featured */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
             {featuredVenues
               .filter((v) => v.featured)
               .slice(0, 2)
@@ -102,41 +101,41 @@ export default function VenuesPage() {
                   viewport={{ once: true }}
                   className="group relative"
                 >
-                  <div className="relative aspect-[16/10] rounded-2xl overflow-hidden">
+                  <div className="relative aspect-[16/10] rounded-[2.5rem] overflow-hidden border border-white/5">
                     {/* Placeholder - replace with actual Image */}
-                    <div className="w-full h-full bg-gradient-to-br from-accent/20 to-accent-secondary/20 flex items-center justify-center border border-white/10">
+                    <div className="w-full h-full bg-gradient-to-br from-white/5 to-white/10 flex items-center justify-center">
                       <span className="text-muted-foreground text-sm uppercase tracking-widest">
                         {venue.name} Image
                       </span>
                     </div>
 
                     {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
 
                     {/* Content */}
-                    <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="px-3 py-1 bg-accent text-background text-xs font-bold uppercase tracking-widest rounded-full">
+                    <div className="absolute inset-0 p-10 flex flex-col justify-end">
+                      <div className="flex items-center gap-4 mb-3">
+                        <span className="px-4 py-1.5 bg-white text-black text-[10px] font-bold uppercase tracking-widest rounded-full">
                           Featured
                         </span>
-                        <span className="text-accent-secondary text-sm">
-                          {venue.performances} performances
+                        <span className="text-white/60 text-[10px] uppercase tracking-widest font-bold">
+                          {venue.performances} shows
                         </span>
                       </div>
-                      <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-1">
+                      <h3 className="text-3xl font-bold text-white mb-2 uppercase tracking-tight">
                         {venue.name}
                       </h3>
-                      <p className="text-accent text-sm mb-3">
+                      <p className="text-white/40 text-xs uppercase tracking-[0.2em] mb-4">
                         {venue.location}
                       </p>
-                      <p className="text-muted-foreground text-sm max-w-md">
+                      <p className="text-muted-foreground text-sm leading-relaxed max-w-md">
                         {venue.description}
                       </p>
                     </div>
                   </div>
 
                   {/* Glow effect */}
-                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-2xl bg-accent/10" />
+                  <div className="absolute inset-0 rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-3xl bg-white/5" />
                 </motion.div>
               ))}
           </div>
@@ -147,41 +146,41 @@ export default function VenuesPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="mb-16"
+            className="mb-24"
           >
             {featuredVenues
               .filter((v) => v.featured)
               .slice(2, 3)
               .map((venue) => (
                 <div key={venue.id} className="group relative">
-                  <div className="relative aspect-[21/9] rounded-2xl overflow-hidden">
+                  <div className="relative aspect-[21/9] rounded-[3rem] overflow-hidden border border-white/5">
                     {/* Placeholder - replace with actual Image */}
-                    <div className="w-full h-full bg-gradient-to-br from-accent-secondary/20 to-accent/20 flex items-center justify-center border border-white/10">
+                    <div className="w-full h-full bg-gradient-to-br from-white/5 to-white/10 flex items-center justify-center">
                       <span className="text-muted-foreground text-sm uppercase tracking-widest">
                         {venue.name} Image
                       </span>
                     </div>
 
                     {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-background via-background/50 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black via-black/20 to-transparent" />
 
                     {/* Content */}
-                    <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-center max-w-xl">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="px-3 py-1 bg-accent text-background text-xs font-bold uppercase tracking-widest rounded-full">
+                    <div className="absolute inset-0 p-12 md:p-16 flex flex-col justify-center max-w-2xl">
+                      <div className="flex items-center gap-4 mb-4">
+                        <span className="px-4 py-1.5 bg-white text-black text-[10px] font-bold uppercase tracking-widest rounded-full">
                           Featured
                         </span>
-                        <span className="text-accent-secondary text-sm">
-                          {venue.performances} performances
+                        <span className="text-white/60 text-[10px] uppercase tracking-widest font-bold">
+                          {venue.performances} shows
                         </span>
                       </div>
-                      <h3 className="text-2xl md:text-4xl font-bold text-foreground mb-1">
+                      <h3 className="text-4xl md:text-5xl font-bold text-white mb-2 uppercase tracking-tight">
                         {venue.name}
                       </h3>
-                      <p className="text-accent text-sm mb-3">
+                      <p className="text-white/40 text-xs uppercase tracking-[0.2em] mb-6">
                         {venue.location}
                       </p>
-                      <p className="text-muted-foreground text-sm">
+                      <p className="text-muted-foreground text-sm leading-relaxed">
                         {venue.description}
                       </p>
                     </div>
@@ -196,13 +195,13 @@ export default function VenuesPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-2xl md:text-3xl font-bold mb-8"
+            className="text-2xl font-bold mb-10 tracking-[0.1em]"
           >
-            <span className="gradient-text">MORE</span>
-            <span className="text-foreground ml-3">VENUES</span>
+            <span className="gradient-text">GLOBAL</span>
+            <span className="text-white ml-3">VENUES</span>
           </motion.h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredVenues
               .filter((v) => !v.featured)
               .map((venue, index) => (
@@ -214,30 +213,30 @@ export default function VenuesPage() {
                   viewport={{ once: true }}
                   className="group"
                 >
-                  <div className="glass rounded-xl overflow-hidden hover:border-accent/50 transition-colors">
+                  <div className="bg-white/[0.03] border border-white/10 rounded-[2rem] overflow-hidden hover:bg-white/[0.06] hover:border-white/20 transition-all duration-500">
                     {/* Image */}
                     <div className="aspect-video relative">
-                      <div className="w-full h-full bg-gradient-to-br from-accent/10 to-accent-secondary/10 flex items-center justify-center">
-                        <span className="text-muted-foreground text-xs uppercase tracking-widest">
-                          {venue.name} Image
+                      <div className="w-full h-full bg-gradient-to-br from-white/5 to-white/10 flex items-center justify-center">
+                        <span className="text-muted-foreground text-[10px] uppercase tracking-widest">
+                          {venue.name}
                         </span>
                       </div>
                     </div>
 
                     {/* Content */}
-                    <div className="p-6">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-lg font-bold text-foreground group-hover:text-accent transition-colors">
+                    <div className="p-8">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-lg font-bold text-white group-hover:text-white transition-colors uppercase tracking-tight">
                           {venue.name}
                         </h3>
-                        <span className="text-accent-secondary text-xs">
+                        <span className="text-white/40 text-[10px] uppercase tracking-widest font-bold">
                           {venue.performances} shows
                         </span>
                       </div>
-                      <p className="text-accent text-sm mb-2">
+                      <p className="text-white/60 text-[10px] uppercase tracking-widest mb-4">
                         {venue.location}
                       </p>
-                      <p className="text-muted-foreground text-sm line-clamp-2">
+                      <p className="text-muted-foreground text-xs leading-relaxed line-clamp-2">
                         {venue.description}
                       </p>
                     </div>
@@ -249,7 +248,7 @@ export default function VenuesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-muted/30">
+      <section className="py-24 bg-white/[0.02]">
         <div className="container mx-auto px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -257,19 +256,19 @@ export default function VenuesPage() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="gradient-text">WANT STEPHY</span>
-              <span className="text-foreground ml-3">AT YOUR VENUE?</span>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">
+              <span className="gradient-text">BRING THE ENERGY</span>
+              <br />
+              <span className="text-white">TO YOUR VENUE</span>
             </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto mb-8">
-              Book Stephy for your next event and bring an unforgettable
-              experience to your dance floor.
+            <p className="text-muted-foreground max-w-xl mx-auto mb-10 text-xs uppercase tracking-widest leading-loose">
+              Available for bookings worldwide.
             </p>
             <motion.a
               href="/contact"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-block px-8 py-4 bg-accent text-background font-semibold uppercase tracking-widest text-sm rounded-full glow-accent hover:bg-accent/90 transition-colors"
+              className="inline-block px-12 py-5 bg-white text-black font-bold uppercase tracking-[0.2em] text-[10px] rounded-full transition-all"
             >
               Get in Touch
             </motion.a>
@@ -279,4 +278,3 @@ export default function VenuesPage() {
     </main>
   );
 }
-

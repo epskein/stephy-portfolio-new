@@ -88,7 +88,7 @@ export default function UpcomingShows() {
                 whileHover={{ y: -4 }}
                 className="group relative"
               >
-                <div className="relative bg-white/[0.03] border border-white/10 rounded-none p-8 md:p-10 flex flex-col md:flex-row items-start md:items-center gap-8 transition-all duration-500 group-hover:bg-white/[0.06] group-hover:border-white/20 group-hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]">
+                <div className="relative bg-white/[0.04] border border-white/10 rounded-2xl p-8 md:p-10 flex flex-col md:flex-row items-start md:items-center gap-8 transition-all duration-500 group-hover:bg-white/[0.08] group-hover:border-white/30 group-hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)]">
                   {/* Date */}
                   <div className="flex-shrink-0 text-center min-w-[100px] border-r border-white/10 md:pr-8">
                     <div className="text-5xl font-black text-white mb-1">{day}</div>
