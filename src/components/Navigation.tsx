@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -38,20 +39,25 @@ export default function Navigation() {
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? "glass py-4"
-            : "bg-transparent py-6"
+            ? "glass py-2"
+            : "bg-transparent py-4"
         }`}
       >
         <nav className="container mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="relative z-10">
+          <Link href="/" className="relative z-10 block">
             <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="text-xl md:text-2xl font-bold tracking-wider"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="relative w-40 h-12 md:w-56 md:h-16"
             >
-              <span className="gradient-text">STEPHY</span>
-              <span className="text-foreground ml-2 hidden sm:inline">LONGUEIRA</span>
+              <Image
+                src="/assets/logo-white.png"
+                alt="Stephy Longueira"
+                fill
+                className="object-contain"
+                priority
+              />
             </motion.div>
           </Link>
 
@@ -60,18 +66,18 @@ export default function Navigation() {
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <motion.span
-                  className={`text-sm uppercase tracking-widest relative ${
+                  className={`text-xs uppercase tracking-[0.2em] relative ${
                     pathname === link.href
-                      ? "text-accent"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "text-white"
+                      : "text-muted-foreground hover:text-white"
                   }`}
-                  whileHover={{ y: -2 }}
+                  whileHover={{ y: -1 }}
                 >
                   {link.label}
                   {pathname === link.href && (
                     <motion.div
                       layoutId="activeNav"
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent"
+                      className="absolute -bottom-1 left-0 right-0 h-px bg-white"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -123,7 +129,7 @@ export default function Navigation() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-background/95 backdrop-blur-xl"
+              className="absolute inset-0 bg-background/98 backdrop-blur-xl"
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <motion.nav
@@ -131,7 +137,7 @@ export default function Navigation() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-muted/50 backdrop-blur-xl flex flex-col items-center justify-center gap-8 p-8"
+              className="absolute right-0 top-0 bottom-0 w-full max-w-sm flex flex-col items-center justify-center gap-8 p-8"
             >
               {navLinks.map((link, index) => (
                 <motion.div
@@ -143,10 +149,10 @@ export default function Navigation() {
                 >
                   <Link
                     href={link.href}
-                    className={`text-2xl uppercase tracking-widest ${
+                    className={`text-xl uppercase tracking-[0.2em] ${
                       pathname === link.href
-                        ? "gradient-text"
-                        : "text-foreground hover:text-accent"
+                        ? "text-white"
+                        : "text-muted-foreground hover:text-white"
                     }`}
                   >
                     {link.label}
@@ -160,4 +166,3 @@ export default function Navigation() {
     </>
   );
 }
-

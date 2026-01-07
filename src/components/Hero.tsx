@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import Image from "next/image";
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -10,100 +11,72 @@ export default function Hero() {
     offset: ["start start", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   return (
     <section
       ref={ref}
-      className="relative h-screen flex items-center justify-center overflow-hidden"
+      className="relative h-screen flex items-center justify-center overflow-hidden w-full"
     >
-      {/* Background with animated gradient */}
-      <div className="absolute inset-0 animated-gradient" />
+      {/* Background Image - Full width */}
+      <motion.div
+        style={{ scale, y }}
+        className="absolute inset-0 z-0"
+      >
+        <Image
+          src="/assets/hero-image.jpg"
+          alt="Stephy Longueira"
+          fill
+          className="object-cover object-center"
+          priority
+          quality={100}
+        />
+        {/* Overlay for better text readability and depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80" />
+      </motion.div>
       
       {/* Noise overlay */}
-      <div className="absolute inset-0 noise" />
-
-      {/* Geometric patterns */}
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-1/2 -right-1/2 w-full h-full"
-        >
-          <div className="w-full h-full border border-accent/10 rounded-full" />
-        </motion.div>
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
-          className="absolute -bottom-1/2 -left-1/2 w-full h-full"
-        >
-          <div className="w-full h-full border border-accent-secondary/10 rounded-full" />
-        </motion.div>
-      </div>
-
-      {/* Hero image placeholder - will be replaced with actual image */}
-      <motion.div
-        style={{ y, scale }}
-        className="absolute inset-0 flex items-center justify-center"
-      >
-        <div className="relative w-full h-full max-w-4xl mx-auto flex items-center justify-center">
-          {/* Placeholder for hero image */}
-          <div className="w-80 h-80 md:w-[500px] md:h-[500px] rounded-full bg-gradient-to-br from-accent/20 to-accent-secondary/20 flex items-center justify-center border border-white/10">
-            <span className="text-muted-foreground text-sm uppercase tracking-widest">
-              Hero Image
-            </span>
-          </div>
-        </div>
-      </motion.div>
+      <div className="absolute inset-0 noise z-10" />
 
       {/* Content */}
       <motion.div
         style={{ opacity }}
-        className="relative z-10 text-center px-6"
+        className="relative z-20 text-center px-6 mt-32 md:mt-48"
       >
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 1, ease: "easeOut" }}
         >
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-4">
-            <span className="gradient-text">STEPHY</span>
+          <h1 className="text-5xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-2 leading-none">
+            <span className="text-white drop-shadow-2xl">STEPHY</span>
           </h1>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-8">
-            <span className="text-foreground">LONGUEIRA</span>
+          <h1 className="text-5xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-8 leading-none">
+            <span className="text-white/90 drop-shadow-2xl">LONGUEIRA</span>
           </h1>
         </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto mb-10"
-        >
-          DJ & ARTIST
-        </motion.p>
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          transition={{ duration: 1, delay: 0.5 }}
+          className="flex flex-col sm:flex-row gap-6 justify-center"
         >
           <motion.a
             href="/contact"
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,1)" }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 bg-accent text-background font-semibold uppercase tracking-widest text-sm rounded-full glow-accent hover:bg-accent/90 transition-colors"
+            className="px-10 py-4 bg-white/90 text-black font-bold uppercase tracking-[0.2em] text-xs rounded-none transition-all duration-300"
           >
             Book Now
           </motion.a>
           <motion.a
             href="#upcoming-shows"
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,1)" }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 border border-foreground/20 text-foreground font-semibold uppercase tracking-widest text-sm rounded-full hover:border-accent hover:text-accent transition-colors"
+            className="px-10 py-4 border border-white/30 text-white font-bold uppercase tracking-[0.2em] text-xs rounded-none transition-all duration-300 backdrop-blur-sm"
           >
             Upcoming Shows
           </motion.a>
@@ -114,18 +87,15 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20"
       >
         <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="w-6 h-10 rounded-full border-2 border-foreground/30 flex items-start justify-center p-2"
-        >
-          <motion.div className="w-1 h-2 bg-accent rounded-full" />
-        </motion.div>
+          animate={{ y: [0, 12, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-px h-16 bg-gradient-to-b from-white to-transparent"
+        />
       </motion.div>
     </section>
   );
 }
-
