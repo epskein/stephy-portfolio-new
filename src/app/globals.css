@@ -16,7 +16,7 @@
   --color-accent: var(--accent);
   --color-accent-secondary: var(--accent-secondary);
   --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
+  --color-muted-foreground: var(--muted-foreground); 
   --color-border: var(--border);
   --font-lexend: var(--font-lexend-tera);
 }
