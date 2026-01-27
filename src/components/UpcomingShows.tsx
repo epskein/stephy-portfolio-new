@@ -2,44 +2,69 @@
 
 import { motion } from "framer-motion";
 
-// Placeholder show data - will be replaced with actual data
 const upcomingShows = [
   {
     id: 1,
-    date: "2026-01-15",
-    venue: "Club Pacha",
-    location: "Ibiza, Spain",
-    time: "23:00",
+    dateRange: { start: "2026-02-06", end: "2026-02-08" },
+    venue: "BUNDU",
+    flag: "🇿🇦",
+    location: "POD Karoo (WC, RSA)",
   },
   {
     id: 2,
-    date: "2026-01-22",
-    venue: "Fabric",
-    location: "London, UK",
-    time: "22:00",
+    dateRange: { start: "2026-02-27", end: "2026-03-01" },
+    venue: "PVT.",
+    flag: "🇿🇦",
+    location: "POD Karoo (WC, RSA)",
   },
   {
     id: 3,
-    date: "2026-02-05",
-    venue: "Berghain",
-    location: "Berlin, Germany",
-    time: "00:00",
+    dateRange: { start: "2026-03-07" },
+    venue: "TBC",
+    flag: "🇿🇦",
+    location: "(CPT, RSA)",
   },
   {
     id: 4,
-    date: "2026-02-14",
-    venue: "Output",
-    location: "New York, USA",
-    time: "22:00",
+    dateRange: { start: "2026-03-14" },
+    venue: "The GreenHouse Bar",
+    flag: "🇿🇦",
+    location: "(JHB, RSA)",
+  },
+  {
+    id: 5,
+    dateRange: { start: "2026-03-28" },
+    venue: "Private Event",
+    flag: "🇦🇺",
+    location: "(BNE, AUS)",
+  },
+  {
+    id: 6,
+    dateRange: { start: "2026-04-27", end: "2026-05-03" },
+    venue: "AfrikaBurn",
+    flag: "🇿🇦",
+    location: "(TNK, RSA)",
   },
 ];
 
-function formatDate(dateString: string) {
-  const date = new Date(dateString);
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = date.toLocaleString("en-US", { month: "short" }).toUpperCase();
-  const year = date.getFullYear();
-  return { day, month, year };
+function emojiToCodepoint(emoji: string) {
+  return Array.from(emoji)
+    .map((char) => char.codePointAt(0)?.toString(16))
+    .filter(Boolean)
+    .join("-");
+}
+
+function formatDateRange(start: string, end?: string) {
+  const startDate = new Date(start);
+  const endDate = end ? new Date(end) : startDate;
+  const startDay = startDate.getDate().toString().padStart(2, "0");
+  const endDay = endDate.getDate().toString().padStart(2, "0");
+  const startMonth = startDate.toLocaleString("en-US", { month: "short" }).toUpperCase();
+  const endMonth = endDate.toLocaleString("en-US", { month: "short" }).toUpperCase();
+  const sameMonth = startMonth === endMonth && startDate.getFullYear() === endDate.getFullYear();
+  const day = startDay === endDay ? startDay : `${startDay}–${endDay}`;
+  const month = sameMonth ? startMonth : `${startMonth}–${endMonth}`;
+  return { day, month };
 }
 
 export default function UpcomingShows() {
@@ -77,7 +102,7 @@ export default function UpcomingShows() {
         {/* Shows Grid */}
         <div className="max-w-4xl mx-auto space-y-6">
           {upcomingShows.map((show, index) => {
-            const { day, month } = formatDate(show.date);
+            const { day, month } = formatDateRange(show.dateRange.start, show.dateRange.end);
             return (
               <motion.div
                 key={show.id}
@@ -105,11 +130,18 @@ export default function UpcomingShows() {
                     <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-6">
                       <p className="text-muted-foreground text-xs uppercase tracking-widest flex items-center gap-2">
                         <span className="w-1 h-1 bg-white/40 rounded-full" />
+                        <img
+                          src={`https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${emojiToCodepoint(
+                            show.flag
+                          )}.svg`}
+                          alt={`${show.flag} flag`}
+                          className="inline-block"
+                          width={14}
+                          height={14}
+                          loading="lazy"
+                          aria-hidden="true"
+                        />
                         {show.location}
-                      </p>
-                      <p className="text-white/60 text-xs uppercase tracking-widest flex items-center gap-2">
-                        <span className="w-1 h-1 bg-white/40 rounded-full" />
-                        {show.time}
                       </p>
                     </div>
                   </div>
