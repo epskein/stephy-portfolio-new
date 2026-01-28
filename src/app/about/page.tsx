@@ -71,17 +71,20 @@ export default function AboutPage() {
               </div>
 
               {/* Stats - rounded boxes */}
-              <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-8">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-8">
                 {[
                   { label: "Shows", value: "100+", color: "white" },
                   { label: "Venues", value: "50+", color: "white/60" },
                   { label: "Countries", value: "10+", color: "gradient" },
                 ].map((stat) => (
-                  <div key={stat.label} className="bg-white/[0.03] border border-white/5 p-3 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] text-center overflow-hidden">
-                    <div className={`text-xl sm:text-2xl md:text-3xl font-black ${stat.color === 'gradient' ? 'gradient-text' : 'text-white'}`}>
+                  <div key={stat.label} className="bg-white/[0.03] border border-white/5 p-4 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] text-center flex flex-row sm:flex-col items-center sm:items-center justify-between sm:justify-center gap-2 sm:gap-0">
+                    <div className="text-[10px] sm:hidden uppercase tracking-widest text-muted-foreground font-bold">
+                      {stat.label}
+                    </div>
+                    <div className={`text-2xl md:text-3xl font-black ${stat.color === 'gradient' ? 'gradient-text' : 'text-white'}`}>
                       {stat.value}
                     </div>
-                    <div className="text-[8px] sm:text-[10px] uppercase tracking-wider sm:tracking-widest text-muted-foreground mt-1 sm:mt-2 font-bold truncate">
+                    <div className="hidden sm:block text-[10px] uppercase tracking-widest text-muted-foreground mt-2 font-bold">
                       {stat.label}
                     </div>
                   </div>
