@@ -13,8 +13,10 @@ export default function PageLoader() {
         await document.fonts.ready;
       }
 
-      // Wait for all images to load
-      const images = Array.from(document.querySelectorAll("img"));
+      // Wait for priority/eager images to load (skip lazy-loaded images)
+      const images = Array.from(document.querySelectorAll("img")).filter(
+        (img) => img.loading !== "lazy"
+      );
       const imagePromises = images.map((img) => {
         if (img.complete) return Promise.resolve();
         return new Promise<void>((resolve) => {
@@ -31,7 +33,16 @@ export default function PageLoader() {
       setIsLoading(false);
     };
 
-    waitForAssets();
+    // Maximum timeout fallback (5 seconds) in case something hangs
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+
+    waitForAssets().finally(() => {
+      clearTimeout(timeout);
+    });
+
+    return () => clearTimeout(timeout);
   }, []);
 
   return (
