@@ -83,6 +83,8 @@ export default function GalleryGrid({ images, categories }: GalleryGridProps) {
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                    quality={75}
+                    loading="lazy"
                   />
 
                   {/* Hover overlay */}
@@ -139,7 +141,8 @@ export default function GalleryGrid({ images, categories }: GalleryGridProps) {
                 alt="Selected Gallery Image"
                 fill
                 className="object-contain"
-                quality={100}
+                quality={75}
+                sizes="100vw"
               />
             </motion.div>
           </motion.div>

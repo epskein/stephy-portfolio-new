@@ -4,17 +4,22 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 
-// Actual images from public/assets/
-const images = [
-  "StephyLongueira15.jpg", "StephyLongueira21.jpg", 
-  "StephyLongueira22.jpg", "StephyLongueira29.jpg", "StephyLongueira31.jpg",
-  "StephyLongueira1.jpg", "StephyLongueira2.jpg", 
-  "StephyLongueira14.jpg", "StephyLongueira9.jpg", "StephyLongueira15.jpg",
+// Actual images from public/assets/gallery (use correct subfolder and exact casing)
+const topRowImages = [
+  "/assets/gallery/live/StephyLongueira15.jpg",
+  "/assets/gallery/live/StephyLongueira21.jpg",
+  "/assets/gallery/live/StephyLongueira22.jpg",
+  "/assets/gallery/live/StephyLongueira29.jpg",
+  "/assets/gallery/live/StephyLongueira31.jpg",
 ];
 
-// Split images into two rows
-const topRowImages = images.slice(0, 5);
-const bottomRowImages = images.slice(5);
+const bottomRowImages = [
+  "/assets/gallery/portraits/StephyLongueira1.jpg",
+  "/assets/gallery/live/StephyLongueira2.JPG",
+  "/assets/gallery/live/StephyLongueira14.jpg",
+  "/assets/gallery/portraits/StephyLongueira9.jpg",
+  "/assets/gallery/live/StephyLongueira13.jpg",
+];
 
 export default function ScrollCarousel() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -57,11 +62,13 @@ export default function ScrollCarousel() {
               className="relative flex-shrink-0 w-[300px] h-[200px] md:w-[450px] md:h-[300px] rounded-[2rem] overflow-hidden group border border-white/5"
             >
               <Image
-                src={`/assets/${img}`}
+                src={img}
                 alt={`Stephy Longueira Performance ${index}`}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                 sizes="(max-width: 768px) 300px, 450px"
+                quality={75}
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
             </div>
@@ -76,11 +83,13 @@ export default function ScrollCarousel() {
               className="relative flex-shrink-0 w-[300px] h-[200px] md:w-[450px] md:h-[300px] rounded-[2rem] overflow-hidden group border border-white/5"
             >
               <Image
-                src={`/assets/${img}`}
+                src={img}
                 alt={`Stephy Longueira Moment ${index}`}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                 sizes="(max-width: 768px) 300px, 450px"
+                quality={75}
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
             </div>

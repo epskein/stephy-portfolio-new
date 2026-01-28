@@ -31,7 +31,7 @@ export default function Hero() {
           fill
           className="object-cover object-center"
           priority
-          quality={100}
+          quality={75}
         />
         {/* Subtle overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
