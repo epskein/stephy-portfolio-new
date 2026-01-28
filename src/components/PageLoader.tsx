@@ -41,8 +41,11 @@ export default function PageLoader() {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="fixed inset-0 z-[9999] bg-black pointer-events-none"
-        />
+          className="fixed inset-0 z-[9999] bg-black pointer-events-none flex items-center justify-center"
+        >
+          {/* Loading spinner */}
+          <div className="w-10 h-10 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+        </motion.div>
       )}
     </AnimatePresence>
   );
