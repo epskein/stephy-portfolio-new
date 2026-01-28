@@ -77,7 +77,7 @@ export default function AboutPage() {
                   { label: "Venues", value: "50+", color: "white/60" },
                   { label: "Countries", value: "10+", color: "gradient" },
                 ].map((stat) => (
-                  <div key={stat.label} className="bg-white/[0.03] border border-white/5 p-4 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] text-center flex flex-row sm:flex-col items-center sm:items-center justify-between sm:justify-center gap-2 sm:gap-0">
+                  <div key={stat.label} className="bg-white/[0.03] border border-white/5 p-4 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] text-center flex flex-row sm:flex-col items-center justify-center gap-2 sm:gap-0">
                     <div className={`text-2xl md:text-3xl font-black ${stat.color === 'gradient' ? 'gradient-text' : 'text-white'}`}>
                       {stat.value}
                     </div>
