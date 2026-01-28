@@ -18,7 +18,7 @@ export default function Hero() {
   return (
     <section
       ref={ref}
-      className="relative h-screen flex items-end justify-center overflow-hidden w-full pb-20 md:pb-24"
+      className="relative h-screen flex items-end justify-center overflow-hidden w-full pb-6 md:pb-24"
     >
       {/* Background Image - Full width */}
       <motion.div
@@ -49,7 +49,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="mb-10"
+          className="mb-4 md:mb-10"
         >
           <h1 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-[0.2em] leading-none text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
             STEPHY LONGUEIRA

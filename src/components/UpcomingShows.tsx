@@ -90,9 +90,9 @@ export default function UpcomingShows() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-4">
             <span className="gradient-text">UPCOMING</span>
-            <span className="text-foreground ml-3">SHOWS</span>
+            <span className="text-foreground ml-2 sm:ml-3">SHOWS</span>
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto uppercase tracking-widest text-[10px]">
             Catch Stephy live at these upcoming events worldwide.
@@ -100,7 +100,7 @@ export default function UpcomingShows() {
         </motion.div>
 
         {/* Shows Grid */}
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-4xl mx-auto space-y-3 md:space-y-6">
           {upcomingShows.map((show, index) => {
             const { day, month } = formatDateRange(show.dateRange.start, show.dateRange.end);
             return (
@@ -113,18 +113,18 @@ export default function UpcomingShows() {
                 whileHover={{ y: -4 }}
                 className="group relative"
               >
-                <div className="relative bg-white/[0.04] border border-white/10 rounded-2xl p-8 md:p-10 flex flex-col md:flex-row items-start md:items-center gap-8 transition-all duration-500 group-hover:bg-white/[0.08] group-hover:border-white/30 group-hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)]">
+                <div className="relative bg-white/[0.04] border border-white/10 rounded-2xl p-4 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 transition-all duration-500 group-hover:bg-white/[0.08] group-hover:border-white/30 group-hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)]">
                   {/* Date */}
-                  <div className="flex-shrink-0 text-center min-w-[100px] border-r border-white/10 md:pr-8">
-                    <div className="text-5xl font-black text-white mb-1">{day}</div>
-                    <div className="text-xs font-bold text-muted-foreground tracking-[0.3em]">
+                  <div className="flex-shrink-0 text-center min-w-[60px] md:min-w-[100px] border-r border-white/10 pr-4 md:pr-8">
+                    <div className="text-3xl md:text-5xl font-black text-white mb-1">{day}</div>
+                    <div className="text-[10px] md:text-xs font-bold text-muted-foreground tracking-[0.2em] md:tracking-[0.3em]">
                       {month}
                     </div>
                   </div>
 
                   {/* Venue Info */}
                   <div className="flex-grow md:pl-4">
-                    <h3 className="text-2xl font-bold text-white mb-2 tracking-tight">
+                    <h3 className="text-lg md:text-2xl font-bold text-white mb-1 md:mb-2 tracking-tight">
                       {show.venue}
                     </h3>
                     <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-6">

@@ -46,10 +46,10 @@ export default function ScrollCarousel() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-3xl md:text-4xl font-black text-center tracking-tight"
+          className="text-2xl sm:text-3xl md:text-4xl font-black text-center tracking-tight"
         >
           <span className="gradient-text">MOMENTS</span>
-          <span className="text-white ml-4">CAPTURED</span>
+          <span className="text-white ml-2 sm:ml-4">CAPTURED</span>
         </motion.h2>
       </div>
 
@@ -59,14 +59,14 @@ export default function ScrollCarousel() {
           {[...topRowImages, ...topRowImages].map((img, index) => (
             <div
               key={`top-${index}`}
-              className="relative flex-shrink-0 w-[300px] h-[200px] md:w-[450px] md:h-[300px] rounded-[2rem] overflow-hidden group border border-white/5"
+              className="relative flex-shrink-0 w-[220px] h-[280px] sm:w-[300px] sm:h-[220px] md:w-[450px] md:h-[300px] rounded-[2rem] overflow-hidden group border border-white/5"
             >
               <Image
                 src={img}
                 alt={`Stephy Longueira Performance ${index}`}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
-                sizes="(max-width: 768px) 300px, 450px"
+                sizes="(max-width: 640px) 220px, (max-width: 768px) 300px, 450px"
                 quality={75}
                 loading="lazy"
               />
@@ -80,14 +80,14 @@ export default function ScrollCarousel() {
           {[...bottomRowImages, ...bottomRowImages].map((img, index) => (
             <div
               key={`bottom-${index}`}
-              className="relative flex-shrink-0 w-[300px] h-[200px] md:w-[450px] md:h-[300px] rounded-[2rem] overflow-hidden group border border-white/5"
+              className="relative flex-shrink-0 w-[220px] h-[280px] sm:w-[300px] sm:h-[220px] md:w-[450px] md:h-[300px] rounded-[2rem] overflow-hidden group border border-white/5"
             >
               <Image
                 src={img}
                 alt={`Stephy Longueira Moment ${index}`}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
-                sizes="(max-width: 768px) 300px, 450px"
+                sizes="(max-width: 640px) 220px, (max-width: 768px) 300px, 450px"
                 quality={75}
                 loading="lazy"
               />

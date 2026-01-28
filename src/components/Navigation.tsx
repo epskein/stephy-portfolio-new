@@ -149,7 +149,7 @@ export default function Navigation() {
                 >
                   <Link
                     href={link.href}
-                    className={`text-xl uppercase tracking-[0.2em] ${
+                    className={`text-lg sm:text-xl uppercase tracking-[0.1em] sm:tracking-[0.2em] text-center ${
                       pathname === link.href
                         ? "text-white"
                         : "text-muted-foreground hover:text-white"

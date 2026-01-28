@@ -91,22 +91,22 @@ export default function ContactPage() {
                 <span className="text-white ml-2">STEPHY</span>
               </h2>
 
-              <div className="grid grid-cols-2 gap-4 w-full">
+              <div className="flex flex-col gap-3 w-full">
                 {socialLinks.map((social, index) => (
                   <motion.a
                     key={social.name}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
-                    className="flex flex-col p-6 rounded-[1.5rem] border border-white/5 bg-white/[0.02] hover:bg-white hover:text-black transition-all group"
+                    className="flex items-center justify-between py-3 px-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white hover:text-black transition-all group"
                   >
-                    <span className="text-[10px] font-bold uppercase tracking-widest mb-1 opacity-40 group-hover:opacity-100">
+                    <span className="text-xs font-bold uppercase tracking-widest opacity-60 group-hover:opacity-100">
                       {social.name}
                     </span>
-                    <span className="text-[8px] sm:text-xs font-bold tracking-tight">
+                    <span className="text-xs font-bold tracking-tight opacity-80 group-hover:opacity-100">
                       {social.handle}
                     </span>
                   </motion.a>
