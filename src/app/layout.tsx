@@ -3,6 +3,7 @@ import { Lexend_Tera } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import PageLoader from "@/components/PageLoader";
 
 const lexendTera = Lexend_Tera({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${lexendTera.variable} antialiased`}>
+        <PageLoader />
         <Navigation />
         <main>{children}</main>
         <Footer />
