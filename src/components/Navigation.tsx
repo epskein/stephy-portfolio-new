@@ -55,7 +55,7 @@ export default function Navigation() {
                 src="/assets/logo-white.png"
                 alt="Stephy Longueira"
                 fill
-                className="object-contain"
+                className="object-contain object-left"
                 priority
               />
             </motion.div>
