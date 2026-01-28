@@ -29,10 +29,10 @@ export default function ScrollCarousel() {
     offset: ["start end", "end start"],
   });
 
-  // Top row moves left as you scroll down
-  const topRowX = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
-  // Bottom row moves right as you scroll down
-  const bottomRowX = useTransform(scrollYProgress, [0, 1], ["-30%", "0%"]);
+  // Top row moves left as you scroll down (faster on mobile)
+  const topRowX = useTransform(scrollYProgress, [0, 1], ["0%", "-60%"]);
+  // Bottom row moves right as you scroll down (faster on mobile)
+  const bottomRowX = useTransform(scrollYProgress, [0, 1], ["-60%", "0%"]);
 
   return (
     <section
@@ -46,10 +46,10 @@ export default function ScrollCarousel() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-2xl sm:text-3xl md:text-4xl font-black text-center tracking-tight"
+          className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-black text-center tracking-tight flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-0"
         >
           <span className="gradient-text">MOMENTS</span>
-          <span className="text-white ml-2 sm:ml-4">CAPTURED</span>
+          <span className="text-white sm:ml-4">CAPTURED</span>
         </motion.h2>
       </div>
 

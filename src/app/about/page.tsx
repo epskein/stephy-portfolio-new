@@ -141,10 +141,10 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 className="bg-white/[0.03] border border-white/10 p-10 rounded-[2.5rem] relative group hover:bg-white/[0.06] transition-all"
               >
-                <div className="text-3xl md:text-4xl font-black text-white/10 absolute top-6 right-6 md:top-8 md:right-10 group-hover:text-white/20 transition-colors z-0">
+                <div className="text-3xl md:text-4xl font-black text-white/10 absolute bottom-4 right-4 md:bottom-6 md:right-8 group-hover:text-white/20 transition-colors">
                   {milestone.year}
                 </div>
-                <h3 className="text-base md:text-lg font-bold text-white mb-4 uppercase tracking-widest relative z-10">
+                <h3 className="text-base md:text-lg font-bold text-white mb-4 uppercase tracking-widest">
                   {milestone.title}
                 </h3>
                 <p className="text-muted-foreground text-xs leading-relaxed uppercase tracking-wider">
@@ -166,9 +166,9 @@ export default function AboutPage() {
             viewport={{ once: true }}
             className="bg-white/[0.03] border border-white/5 rounded-[3rem] p-10 md:p-16 max-w-5xl mx-auto text-center"
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 uppercase tracking-[0.1em]">
+            <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-8 uppercase tracking-[0.05em] sm:tracking-[0.1em] flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-0">
               <span className="gradient-text">MUSICAL</span>
-              <span className="text-white ml-2 sm:ml-4">STYLE</span>
+              <span className="text-white sm:ml-4">STYLE</span>
             </h2>
             <p className="text-muted-foreground text-sm leading-relaxed mb-12 uppercase tracking-widest max-w-3xl mx-auto">
               Drawing inspiration from a wide range of electronic music genres,

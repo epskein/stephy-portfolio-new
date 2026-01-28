@@ -42,11 +42,11 @@ export default function ContactPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="bg-white/[0.03] border border-white/10 rounded-[2.5rem] p-10 md:p-12 flex flex-col items-center text-center"
+              className="bg-white/[0.03] border border-white/10 rounded-[2.5rem] p-6 sm:p-10 md:p-12 flex flex-col items-center text-center overflow-hidden"
             >
-              <h2 className="text-2xl font-bold mb-12 tracking-[0.1em] uppercase">
+              <h2 className="text-lg sm:text-2xl font-bold mb-12 tracking-[0.05em] sm:tracking-[0.1em] uppercase flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-0">
                 <span className="gradient-text">DIRECT</span>
-                <span className="text-white ml-2">CONTACT</span>
+                <span className="text-white sm:ml-2">CONTACT</span>
               </h2>
 
               <div className="space-y-12 w-full">
@@ -59,7 +59,7 @@ export default function ContactPage() {
                   </p>
                   <a
                     href="mailto:booking@stephylongueira.com"
-                    className="text-sm md:text-base font-bold text-white hover:text-white/60 transition-colors tracking-tight block"
+                    className="text-xs sm:text-sm md:text-base font-bold text-white hover:text-white/60 transition-colors tracking-tight block break-all"
                   >
                     booking@stephylongueira.com
                   </a>
@@ -71,7 +71,7 @@ export default function ContactPage() {
                   </h3>
                   <a
                     href="mailto:press@stephylongueira.com"
-                    className="text-sm md:text-base font-bold text-white hover:text-white/60 transition-colors tracking-tight block"
+                    className="text-xs sm:text-sm md:text-base font-bold text-white hover:text-white/60 transition-colors tracking-tight block break-all"
                   >
                     press@stephylongueira.com
                   </a>
@@ -84,11 +84,11 @@ export default function ContactPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="bg-white/[0.03] border border-white/10 rounded-[2.5rem] p-10 md:p-12 flex flex-col items-center text-center"
+              className="bg-white/[0.03] border border-white/10 rounded-[2.5rem] p-6 sm:p-10 md:p-12 flex flex-col items-center text-center overflow-hidden"
             >
-              <h2 className="text-2xl font-bold mb-8 tracking-[0.1em] uppercase">
+              <h2 className="text-lg sm:text-2xl font-bold mb-8 tracking-[0.05em] sm:tracking-[0.1em] uppercase flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-0">
                 <span className="gradient-text">FOLLOW</span>
-                <span className="text-white ml-2">STEPHY</span>
+                <span className="text-white sm:ml-2">STEPHY</span>
               </h2>
 
               <div className="flex flex-col gap-3 w-full">
@@ -101,12 +101,12 @@ export default function ContactPage() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
-                    className="flex items-center justify-between py-3 px-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white hover:text-black transition-all group"
+                    className="flex flex-col sm:flex-row items-center justify-between py-3 px-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white hover:text-black transition-all group gap-1 sm:gap-0"
                   >
-                    <span className="text-xs font-bold uppercase tracking-widest opacity-60 group-hover:opacity-100">
+                    <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest opacity-60 group-hover:opacity-100">
                       {social.name}
                     </span>
-                    <span className="text-xs font-bold tracking-tight opacity-80 group-hover:opacity-100">
+                    <span className="text-[10px] sm:text-xs font-bold tracking-tight opacity-80 group-hover:opacity-100">
                       {social.handle}
                     </span>
                   </motion.a>

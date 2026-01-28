@@ -90,9 +90,9 @@ export default function UpcomingShows() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="text-xl xs:text-2xl sm:text-4xl md:text-5xl font-bold mb-4 flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-0">
             <span className="gradient-text">UPCOMING</span>
-            <span className="text-foreground ml-2 sm:ml-3">SHOWS</span>
+            <span className="text-foreground sm:ml-3">SHOWS</span>
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto uppercase tracking-widest text-[10px]">
             Catch Stephy live at these upcoming events worldwide.
@@ -113,42 +113,34 @@ export default function UpcomingShows() {
                 whileHover={{ y: -4 }}
                 className="group relative"
               >
-                <div className="relative bg-white/[0.04] border border-white/10 rounded-2xl p-4 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 transition-all duration-500 group-hover:bg-white/[0.08] group-hover:border-white/30 group-hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)]">
-                  {/* Date */}
-                  <div className="flex-shrink-0 text-center min-w-[60px] md:min-w-[100px] border-r border-white/10 pr-4 md:pr-8">
-                    <div className="text-3xl md:text-5xl font-black text-white mb-1">{day}</div>
-                    <div className="text-[10px] md:text-xs font-bold text-muted-foreground tracking-[0.2em] md:tracking-[0.3em]">
+                <div className="relative bg-white/[0.04] border border-white/10 rounded-2xl p-3 md:p-6 flex flex-row items-center gap-3 md:gap-6 transition-all duration-500 group-hover:bg-white/[0.08] group-hover:border-white/30 group-hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)]">
+                  {/* Date - always left */}
+                  <div className="flex-shrink-0 text-center min-w-[50px] md:min-w-[80px] border-r border-white/10 pr-3 md:pr-6">
+                    <div className="text-xl md:text-4xl font-black text-white">{day}</div>
+                    <div className="text-[8px] md:text-[10px] font-bold text-muted-foreground tracking-[0.15em] md:tracking-[0.2em]">
                       {month}
                     </div>
                   </div>
 
-                  {/* Venue Info */}
-                  <div className="flex-grow md:pl-4">
-                    <h3 className="text-lg md:text-2xl font-bold text-white mb-1 md:mb-2 tracking-tight">
+                  {/* Venue Info - always right */}
+                  <div className="flex-grow min-w-0">
+                    <h3 className="text-sm md:text-xl font-bold text-white mb-0.5 md:mb-1 tracking-tight truncate">
                       {show.venue}
                     </h3>
-                    <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-6">
-                      <p className="text-muted-foreground text-xs uppercase tracking-widest flex items-center gap-2">
-                        <span className="w-1 h-1 bg-white/40 rounded-full" />
-                        <img
-                          src={`https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${emojiToCodepoint(
-                            show.flag
-                          )}.svg`}
-                          alt={`${show.flag} flag`}
-                          className="inline-block"
-                          width={14}
-                          height={14}
-                          loading="lazy"
-                          aria-hidden="true"
-                        />
-                        {show.location}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Visual Accent */}
-                  <div className="hidden md:block opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <div className="w-8 h-[1px] bg-white/40" />
+                    <p className="text-muted-foreground text-[10px] md:text-xs uppercase tracking-wider flex items-center gap-1.5 truncate">
+                      <img
+                        src={`https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${emojiToCodepoint(
+                          show.flag
+                        )}.svg`}
+                        alt={`${show.flag} flag`}
+                        className="inline-block flex-shrink-0"
+                        width={12}
+                        height={12}
+                        loading="lazy"
+                        aria-hidden="true"
+                      />
+                      <span className="truncate">{show.location}</span>
+                    </p>
                   </div>
                 </div>
               </motion.div>
