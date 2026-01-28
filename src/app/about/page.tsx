@@ -71,17 +71,17 @@ export default function AboutPage() {
               </div>
 
               {/* Stats - rounded boxes */}
-              <div className="grid grid-cols-3 gap-4 pt-8">
+              <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-8">
                 {[
                   { label: "Shows", value: "100+", color: "white" },
                   { label: "Venues", value: "50+", color: "white/60" },
                   { label: "Countries", value: "10+", color: "gradient" },
-                ].map((stat, i) => (
-                  <div key={stat.label} className="bg-white/[0.03] border border-white/5 p-6 rounded-[2rem] text-center">
-                    <div className={`text-2xl md:text-3xl font-black ${stat.color === 'gradient' ? 'gradient-text' : 'text-white'}`}>
+                ].map((stat) => (
+                  <div key={stat.label} className="bg-white/[0.03] border border-white/5 p-3 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] text-center overflow-hidden">
+                    <div className={`text-xl sm:text-2xl md:text-3xl font-black ${stat.color === 'gradient' ? 'gradient-text' : 'text-white'}`}>
                       {stat.value}
                     </div>
-                    <div className="text-[10px] uppercase tracking-widest text-muted-foreground mt-2 font-bold">
+                    <div className="text-[8px] sm:text-[10px] uppercase tracking-wider sm:tracking-widest text-muted-foreground mt-1 sm:mt-2 font-bold truncate">
                       {stat.label}
                     </div>
                   </div>

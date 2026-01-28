@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 
@@ -23,15 +23,22 @@ const bottomRowImages = [
 
 export default function ScrollCarousel() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   });
 
-  // Top row moves left as you scroll down (faster on mobile)
+  // Desktop: scroll-linked movement
   const topRowX = useTransform(scrollYProgress, [0, 1], ["0%", "-60%"]);
-  // Bottom row moves right as you scroll down (faster on mobile)
   const bottomRowX = useTransform(scrollYProgress, [0, 1], ["-60%", "0%"]);
 
   return (
@@ -54,52 +61,139 @@ export default function ScrollCarousel() {
       </div>
 
       <div className="flex flex-col gap-6 md:gap-8">
-        {/* Top Row - scrolls left */}
-        <motion.div style={{ x: topRowX }} className="flex gap-4 md:gap-6 whitespace-nowrap">
-          {[...topRowImages, ...topRowImages].map((img, index) => (
-            <div
-              key={`top-${index}`}
-              className="relative flex-shrink-0 w-[220px] h-[280px] sm:w-[300px] sm:h-[220px] md:w-[450px] md:h-[300px] rounded-[2rem] overflow-hidden group border border-white/5"
-            >
-              <Image
-                src={img}
-                alt={`Stephy Longueira Performance ${index}`}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-                sizes="(max-width: 640px) 220px, (max-width: 768px) 300px, 450px"
-                quality={75}
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+        {/* Top Row */}
+        {isMobile ? (
+          <div 
+            className="flex gap-4 overflow-x-auto scrollbar-hide touch-pan-x"
+            style={{ scrollBehavior: "smooth" }}
+          >
+            <div className="flex gap-4 animate-scroll-left">
+              {[...topRowImages, ...topRowImages, ...topRowImages].map((img, index) => (
+                <div
+                  key={`top-${index}`}
+                  className="relative flex-shrink-0 w-[220px] h-[280px] rounded-[2rem] overflow-hidden group border border-white/5"
+                >
+                  <Image
+                    src={img}
+                    alt={`Stephy Longueira Performance ${index}`}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    sizes="220px"
+                    quality={75}
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+                </div>
+              ))}
             </div>
-          ))}
-        </motion.div>
+          </div>
+        ) : (
+          <motion.div style={{ x: topRowX }} className="flex gap-6 whitespace-nowrap">
+            {[...topRowImages, ...topRowImages].map((img, index) => (
+              <div
+                key={`top-${index}`}
+                className="relative flex-shrink-0 w-[300px] h-[220px] md:w-[450px] md:h-[300px] rounded-[2rem] overflow-hidden group border border-white/5"
+              >
+                <Image
+                  src={img}
+                  alt={`Stephy Longueira Performance ${index}`}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  sizes="(max-width: 768px) 300px, 450px"
+                  quality={75}
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+              </div>
+            ))}
+          </motion.div>
+        )}
 
-        {/* Bottom Row - scrolls right */}
-        <motion.div style={{ x: bottomRowX }} className="flex gap-4 md:gap-6 whitespace-nowrap">
-          {[...bottomRowImages, ...bottomRowImages].map((img, index) => (
-            <div
-              key={`bottom-${index}`}
-              className="relative flex-shrink-0 w-[220px] h-[280px] sm:w-[300px] sm:h-[220px] md:w-[450px] md:h-[300px] rounded-[2rem] overflow-hidden group border border-white/5"
-            >
-              <Image
-                src={img}
-                alt={`Stephy Longueira Moment ${index}`}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-                sizes="(max-width: 640px) 220px, (max-width: 768px) 300px, 450px"
-                quality={75}
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+        {/* Bottom Row */}
+        {isMobile ? (
+          <div 
+            className="flex gap-4 overflow-x-auto scrollbar-hide touch-pan-x"
+            style={{ scrollBehavior: "smooth" }}
+          >
+            <div className="flex gap-4 animate-scroll-right">
+              {[...bottomRowImages, ...bottomRowImages, ...bottomRowImages].map((img, index) => (
+                <div
+                  key={`bottom-${index}`}
+                  className="relative flex-shrink-0 w-[220px] h-[280px] rounded-[2rem] overflow-hidden group border border-white/5"
+                >
+                  <Image
+                    src={img}
+                    alt={`Stephy Longueira Moment ${index}`}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    sizes="220px"
+                    quality={75}
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+                </div>
+              ))}
             </div>
-          ))}
-        </motion.div>
+          </div>
+        ) : (
+          <motion.div style={{ x: bottomRowX }} className="flex gap-6 whitespace-nowrap">
+            {[...bottomRowImages, ...bottomRowImages].map((img, index) => (
+              <div
+                key={`bottom-${index}`}
+                className="relative flex-shrink-0 w-[300px] h-[220px] md:w-[450px] md:h-[300px] rounded-[2rem] overflow-hidden group border border-white/5"
+              >
+                <Image
+                  src={img}
+                  alt={`Stephy Longueira Moment ${index}`}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  sizes="(max-width: 768px) 300px, 450px"
+                  quality={75}
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+              </div>
+            ))}
+          </motion.div>
+        )}
       </div>
 
       {/* Gradient overlays for fade effect */}
       <div className="absolute top-0 left-0 w-32 md:w-64 h-full bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
       <div className="absolute top-0 right-0 w-32 md:w-64 h-full bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+
+      {/* CSS for auto-scrolling animation on mobile */}
+      <style jsx>{`
+        @keyframes scroll-left {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-33.33%);
+          }
+        }
+        @keyframes scroll-right {
+          0% {
+            transform: translateX(-33.33%);
+          }
+          100% {
+            transform: translateX(0);
+          }
+        }
+        .animate-scroll-left {
+          animation: scroll-left 30s linear infinite;
+        }
+        .animate-scroll-right {
+          animation: scroll-right 30s linear infinite;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </section>
   );
 }
