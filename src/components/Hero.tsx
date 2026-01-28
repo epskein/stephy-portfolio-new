@@ -26,12 +26,12 @@ export default function Hero() {
         className="absolute inset-0 z-0"
       >
         <Image
-          src="/assets/hero-image.jpg"
+          src="/assets/hero-image.webp"
           alt="Stephy Longueira"
           fill
           className="object-cover object-center"
           priority
-          quality={75}
+          quality={90}
         />
         {/* Subtle overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
