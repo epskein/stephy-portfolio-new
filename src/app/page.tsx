@@ -9,7 +9,7 @@ export default async function Home() {
   return (
     <>
       <Hero />
-      <ScrollCarousel images={carouselImages} animation="hover" />
+      <ScrollCarousel images={carouselImages} animation="autoscroll" />
       <UpcomingShows />
     </>
   );
