@@ -3,7 +3,16 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-const upcomingShows = [
+interface ShowItem {
+  id: string | number;
+  dateRange: { start: string; end?: string };
+  venue: string;
+  flag: string;
+  location: string;
+}
+
+// Fallback content — used only until shows are added in the Sanity Studio.
+const fallbackShows: ShowItem[] = [
   {
     id: 1,
     dateRange: { start: "2026-05-29" },
@@ -64,10 +73,12 @@ function formatDateRange(start: string, end?: string) {
   return { day, month };
 }
 
-export default function UpcomingShows() {
+export default function UpcomingShows({ shows }: { shows?: ShowItem[] }) {
   const [today] = useState(startOfToday);
 
-  const sorted = [...upcomingShows].sort(
+  const events = shows && shows.length > 0 ? shows : fallbackShows;
+
+  const sorted = [...events].sort(
     (a, b) =>
       parseDate(a.dateRange.start).getTime() -
       parseDate(b.dateRange.start).getTime()
@@ -221,7 +232,7 @@ export default function UpcomingShows() {
 
         {/* Event cards */}
         <div className="max-w-4xl mx-auto space-y-3 md:space-y-6">
-          {upcomingShows.map((show, index) => {
+          {sorted.map((show, index) => {
             const { day, month } = formatDateRange(
               show.dateRange.start,
               show.dateRange.end

@@ -7,7 +7,7 @@ export type SocialPlatform =
   | "YouTube";
 
 export interface SocialLink {
-  name: SocialPlatform;
+  name: SocialPlatform | string;
   href: string;
   handle: string;
 }
@@ -34,7 +34,7 @@ export function SocialIcon({
   name,
   className = "w-5 h-5",
 }: {
-  name: SocialPlatform;
+  name: SocialPlatform | string;
   className?: string;
 }) {
   const common = {

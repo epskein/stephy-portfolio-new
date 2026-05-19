@@ -2,10 +2,13 @@ import fs from "fs";
 import path from "path";
 import sharp from "sharp";
 import GalleryGrid from "@/components/GalleryGrid";
+import { getGalleryImages } from "@/sanity/queries";
 
-// Server-side logic to scan the gallery folder and read image dimensions so
-// the grid can show each photo at its true aspect ratio (no cropping).
-async function getGalleryData() {
+export const revalidate = 60;
+
+// Fallback: scan the bundled gallery folder (used until photos are added in
+// the Sanity Studio).
+async function getFallbackGalleryData() {
   const galleryDir = path.join(process.cwd(), "public/assets/gallery");
 
   if (!fs.existsSync(galleryDir)) {
@@ -72,7 +75,15 @@ async function getGalleryData() {
 }
 
 export default async function GalleryPage() {
-  const { images, categories } = await getGalleryData();
+  const sanityImages = await getGalleryImages();
+
+  let images: { id: string; src: string; category: string; width: number; height: number }[];
+  if (sanityImages.length > 0) {
+    images = [...sanityImages].sort(() => Math.random() - 0.5);
+  } else {
+    images = (await getFallbackGalleryData()).images;
+  }
+  const categories = [...new Set(images.map((img) => img.category))];
 
   return (
     <main className="min-h-screen pt-24 pb-16">

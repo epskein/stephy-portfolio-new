@@ -3,7 +3,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { socialLinks, SocialIcon } from "@/components/socials";
+import {
+  socialLinks as fallbackSocialLinks,
+  SocialIcon,
+  type SocialLink,
+} from "@/components/socials";
 
 const quickLinks = [
   { href: "/", label: "Home" },
@@ -14,7 +18,14 @@ const quickLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-export default function Footer() {
+export default function Footer({
+  socialLinks,
+}: {
+  socialLinks?: SocialLink[];
+}) {
+  const links =
+    socialLinks && socialLinks.length > 0 ? socialLinks : fallbackSocialLinks;
+
   return (
     <footer className="relative bg-muted border-t border-border">
       <div className="container mx-auto px-6 py-16">
@@ -59,7 +70,7 @@ export default function Footer() {
               CONNECT
             </h4>
             <div className="flex flex-wrap gap-3">
-              {socialLinks.map((social) => (
+              {links.map((social) => (
                 <motion.a
                   key={social.name}
                   href={social.href}

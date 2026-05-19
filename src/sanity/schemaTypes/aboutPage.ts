@@ -14,9 +14,9 @@ export const aboutPage = defineType({
     defineField({
       name: "bio",
       title: "Biography",
-      description: "The main 'About Stephy' paragraphs.",
+      description: "The main 'About Stephy' paragraphs — add one block per paragraph.",
       type: "array",
-      of: [defineArrayMember({ type: "block", styles: [{ title: "Normal", value: "normal" }], lists: [] })],
+      of: [defineArrayMember({ type: "text" })],
     }),
     defineField({
       name: "stats",
