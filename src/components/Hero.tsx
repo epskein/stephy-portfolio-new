@@ -22,7 +22,7 @@ export default function Hero() {
     >
       {/* Background Image - Full width */}
       <motion.div
-        style={{ scale, y }}
+        style={{ scale, y, willChange: "transform" }}
         className="absolute inset-0 z-0"
       >
         <Image
@@ -31,9 +31,8 @@ export default function Hero() {
           fill
           className="object-cover object-center"
           priority
-          quality={90}
+          quality={75}
           sizes="100vw"
-          unoptimized
         />
         {/* Subtle overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
@@ -65,7 +64,7 @@ export default function Hero() {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <motion.a
-            href="/contact"
+            href="mailto:bookings@stephylongueira.com"
             whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,1)" }}
             whileTap={{ scale: 0.95 }}
             className="px-10 py-4 bg-white text-black font-bold uppercase tracking-[0.2em] text-[10px] rounded-full transition-all duration-300 min-w-[180px]"

@@ -1,11 +1,13 @@
 import fs from "fs";
 import path from "path";
+import sharp from "sharp";
 import GalleryGrid from "@/components/GalleryGrid";
 
-// Server-side logic to scan the gallery folder
+// Server-side logic to scan the gallery folder and read image dimensions so
+// the grid can show each photo at its true aspect ratio (no cropping).
 async function getGalleryData() {
   const galleryDir = path.join(process.cwd(), "public/assets/gallery");
-  
+
   if (!fs.existsSync(galleryDir)) {
     return { images: [], categories: [] };
   }
@@ -14,7 +16,12 @@ async function getGalleryData() {
     return fs.statSync(path.join(galleryDir, file)).isDirectory();
   });
 
-  const images: { id: string; src: string; category: string }[] = [];
+  const entries: {
+    id: string;
+    src: string;
+    category: string;
+    abs: string;
+  }[] = [];
 
   categories.forEach((category) => {
     const categoryDir = path.join(galleryDir, category);
@@ -24,13 +31,39 @@ async function getGalleryData() {
     });
 
     files.forEach((file) => {
-      images.push({
+      entries.push({
         id: `${category}-${file}`,
         src: `/assets/gallery/${category}/${file}`,
-        category: category,
+        category,
+        abs: path.join(categoryDir, file),
       });
     });
   });
+
+  const images = await Promise.all(
+    entries.map(async (entry) => {
+      let width = 4;
+      let height = 3;
+      try {
+        const meta = await sharp(entry.abs).metadata();
+        width = meta.width ?? 4;
+        height = meta.height ?? 3;
+        // EXIF orientations 5-8 mean the image is stored rotated 90°.
+        if (meta.orientation && meta.orientation >= 5) {
+          [width, height] = [height, width];
+        }
+      } catch {
+        /* fall back to 4:3 */
+      }
+      return {
+        id: entry.id,
+        src: entry.src,
+        category: entry.category,
+        width,
+        height,
+      };
+    })
+  );
 
   // Shuffle the entire images array so "ALL" section is randomized
   const shuffledImages = [...images].sort(() => Math.random() - 0.5);

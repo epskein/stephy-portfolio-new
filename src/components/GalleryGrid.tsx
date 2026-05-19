@@ -8,6 +8,8 @@ interface GalleryImage {
   id: string;
   src: string;
   category: string;
+  width: number;
+  height: number;
 }
 
 interface GalleryGridProps {
@@ -58,31 +60,28 @@ export default function GalleryGrid({ images, categories }: GalleryGridProps) {
         ))}
       </motion.div>
 
-      {/* Gallery Grid */}
+      {/* Gallery Grid — masonry so every photo keeps its true aspect ratio */}
       <section className="pb-20">
         <div className="container mx-auto px-6">
-          <motion.div
-            layout
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          >
-            <AnimatePresence mode="popLayout">
+          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6">
+            <AnimatePresence>
               {filteredImages.map((image, index) => (
                 <motion.div
                   key={image.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.4, delay: (index % 12) * 0.04 }}
                   onClick={() => setSelectedImage(image.src)}
-                  className="relative aspect-square rounded-[2rem] overflow-hidden cursor-pointer group"
+                  style={{ aspectRatio: image.width / image.height }}
+                  className="relative w-full mb-6 break-inside-avoid rounded-[2rem] overflow-hidden cursor-pointer group"
                 >
                   <Image
                     src={image.src}
                     alt={`Gallery Image ${index}`}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                     quality={75}
                     loading="lazy"
                   />
@@ -95,8 +94,8 @@ export default function GalleryGrid({ images, categories }: GalleryGridProps) {
                 </motion.div>
               ))}
             </AnimatePresence>
-          </motion.div>
-          
+          </div>
+
           {images.length === 0 && (
             <div className="text-center py-20">
               <p className="text-muted-foreground uppercase tracking-widest text-xs">

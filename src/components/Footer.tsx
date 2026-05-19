@@ -3,17 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-
-const socialLinks = [
-  { name: "Instagram", href: "#", icon: "IG" },
-  { name: "SoundCloud", href: "#", icon: "SC" },
-  { name: "Spotify", href: "#", icon: "SP" },
-  { name: "YouTube", href: "#", icon: "YT" },
-];
+import { socialLinks, SocialIcon } from "@/components/socials";
 
 const quickLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
+  { href: "/music", label: "Music" },
   { href: "/gallery", label: "Gallery" },
   { href: "/venues", label: "Featured Venues" },
   { href: "/contact", label: "Contact" },
@@ -63,28 +58,29 @@ export default function Footer() {
             <h4 className="text-xs font-semibold tracking-[0.2em] text-white uppercase">
               CONNECT
             </h4>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-3">
               {socialLinks.map((social) => (
                 <motion.a
                   key={social.name}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={social.name}
                   whileHover={{ scale: 1.1, y: -2, borderColor: "white", color: "white" }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-10 h-10 rounded-none border border-border flex items-center justify-center text-[10px] font-bold text-muted-foreground transition-all"
+                  className="w-10 h-10 rounded-none border border-border flex items-center justify-center text-muted-foreground transition-all"
                 >
-                  {social.icon}
+                  <SocialIcon name={social.name} />
                 </motion.a>
               ))}
             </div>
             <p className="text-muted-foreground text-sm pt-2">
               For bookings:{" "}
               <a
-                href="mailto:booking@stephylongueira.com"
+                href="mailto:bookings@stephylongueira.com"
                 className="text-white hover:underline transition-colors"
               >
-                booking@stephylongueira.com
+                bookings@stephylongueira.com
               </a>
             </p>
           </div>

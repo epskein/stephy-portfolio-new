@@ -1,51 +1,40 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 const upcomingShows = [
   {
     id: 1,
-    dateRange: { start: "2026-02-06", end: "2026-02-08" },
-    venue: "BUNDU",
-    flag: "🇿🇦",
-    location: "POD Karoo (WC, RSA)",
-  },
-  {
-    id: 2,
-    dateRange: { start: "2026-02-27", end: "2026-03-01" },
-    venue: "PVT.",
-    flag: "🇿🇦",
-    location: "POD Karoo (WC, RSA)",
-  },
-  {
-    id: 3,
-    dateRange: { start: "2026-03-07" },
-    venue: "TBC",
+    dateRange: { start: "2026-05-29" },
+    venue: "Mirage",
     flag: "🇿🇦",
     location: "(CPT, RSA)",
   },
   {
+    id: 2,
+    dateRange: { start: "2026-06-06" },
+    venue: "Luminary Gala",
+    flag: "🇿🇦",
+    location: "(CPT, RSA)",
+  },
+  {
+    id: 3,
+    dateRange: { start: "2026-09-24", end: "2026-09-28" },
+    venue: "Lost City",
+    flag: "🇿🇦",
+    location: "POD Karoo (WC, RSA)",
+  },
+  {
     id: 4,
-    dateRange: { start: "2026-03-14" },
-    venue: "The GreenHouse Bar",
+    dateRange: { start: "2026-10-22", end: "2026-10-26" },
+    venue: "Lazerville",
     flag: "🇿🇦",
-    location: "(JHB, RSA)",
-  },
-  {
-    id: 5,
-    dateRange: { start: "2026-03-28" },
-    venue: "Private Event",
-    flag: "🇦🇺",
-    location: "(BNE, AUS)",
-  },
-  {
-    id: 6,
-    dateRange: { start: "2026-04-27", end: "2026-05-03" },
-    venue: "AfrikaBurn",
-    flag: "🇿🇦",
-    location: "(TNK, RSA)",
+    location: "POD Karoo (WC, RSA)",
   },
 ];
+
+const MS_PER_DAY = 86400000;
 
 function emojiToCodepoint(emoji: string) {
   return Array.from(emoji)
@@ -54,9 +43,19 @@ function emojiToCodepoint(emoji: string) {
     .join("-");
 }
 
+function parseDate(value: string) {
+  return new Date(`${value}T00:00:00`);
+}
+
+function startOfToday() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
 function formatDateRange(start: string, end?: string) {
-  const startDate = new Date(start);
-  const endDate = end ? new Date(end) : startDate;
+  const startDate = parseDate(start);
+  const endDate = end ? parseDate(end) : startDate;
   const startDay = startDate.getDate().toString().padStart(2, "0");
   const endDay = endDate.getDate().toString().padStart(2, "0");
   const startMonth = startDate.toLocaleString("en-US", { month: "short" }).toUpperCase();
@@ -67,7 +66,44 @@ function formatDateRange(start: string, end?: string) {
   return { day, month };
 }
 
+function formatFullDate(d: Date) {
+  const day = d.getDate().toString().padStart(2, "0");
+  const month = d.toLocaleString("en-US", { month: "short" }).toUpperCase();
+  return `${day} ${month} ${d.getFullYear()}`;
+}
+
+// Human-friendly approximation of a gap in days.
+function formatGap(days: number) {
+  if (days <= 1) return "1 DAY";
+  if (days < 14) return `${days} DAYS`;
+  if (days < 60) return `≈ ${Math.round(days / 7)} WEEKS`;
+  return `≈ ${Math.round(days / 30)} MONTHS`;
+}
+
 export default function UpcomingShows() {
+  const [today] = useState(startOfToday);
+
+  // Sort by date, then measure the gap before each event so the connector
+  // segments approximate each show's position along the year.
+  const sorted = [...upcomingShows].sort(
+    (a, b) =>
+      parseDate(a.dateRange.start).getTime() -
+      parseDate(b.dateRange.start).getTime()
+  );
+
+  let previous = today;
+  const nodes = sorted.map((show) => {
+    const start = parseDate(show.dateRange.start);
+    const gapDays = Math.max(
+      0,
+      Math.round((start.getTime() - previous.getTime()) / MS_PER_DAY)
+    );
+    previous = start;
+    // Connector length scales with the real gap (clamped so it stays clean).
+    const connectorPx = Math.min(240, Math.max(56, 48 + gapDays));
+    return { show, gapDays, connectorPx };
+  });
+
   return (
     <section id="upcoming-shows" className="relative py-24 bg-background">
       {/* Background pattern */}
@@ -99,51 +135,125 @@ export default function UpcomingShows() {
           </p>
         </motion.div>
 
-        {/* Shows Grid */}
-        <div className="max-w-4xl mx-auto space-y-3 md:space-y-6">
-          {upcomingShows.map((show, index) => {
-            const { day, month } = formatDateRange(show.dateRange.start, show.dateRange.end);
-            return (
-              <motion.div
-                key={show.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -4 }}
-                className="group relative"
-              >
-                <div className="relative bg-white/[0.04] border border-white/10 rounded-2xl p-3 md:p-6 flex flex-row items-center gap-3 md:gap-6 transition-all duration-500 group-hover:bg-white/[0.08] group-hover:border-white/30 group-hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)]">
-                  {/* Date - always left */}
-                  <div className="flex-shrink-0 text-center min-w-[50px] md:min-w-[80px] border-r border-white/10 pr-3 md:pr-6">
-                    <div className="text-xl md:text-4xl font-black text-white">{day}</div>
-                    <div className="text-[8px] md:text-[10px] font-bold text-muted-foreground tracking-[0.15em] md:tracking-[0.2em]">
-                      {month}
-                    </div>
-                  </div>
+        {/* Timeline */}
+        <div className="relative max-w-3xl mx-auto">
+          {/* TODAY marker */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="relative flex gap-4 sm:gap-6"
+          >
+            <div className="relative w-4 flex-shrink-0">
+              <div className="absolute left-1/2 -translate-x-1/2 top-6 bottom-0 w-px bg-white/15" />
+              <span className="relative z-10 mx-auto mt-2 flex h-4 w-4 items-center justify-center">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-white/30 animate-ping" />
+                <span className="relative h-3 w-3 rounded-full bg-white" />
+              </span>
+            </div>
+            <div className="pb-2">
+              <div className="text-[10px] font-bold tracking-[0.25em] text-white/50 uppercase">
+                Today
+              </div>
+              <div className="text-sm md:text-base font-bold text-white tracking-tight">
+                {formatFullDate(today)}
+              </div>
+            </div>
+          </motion.div>
 
-                  {/* Venue Info - always right */}
-                  <div className="flex-grow min-w-0">
-                    <h3 className="text-sm md:text-xl font-bold text-white mb-0.5 md:mb-1 tracking-tight truncate">
-                      {show.venue}
-                    </h3>
-                    <p className="text-muted-foreground text-[10px] md:text-xs uppercase tracking-wider flex items-center gap-1.5 truncate">
-                      <img
-                        src={`https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${emojiToCodepoint(
-                          show.flag
-                        )}.svg`}
-                        alt={`${show.flag} flag`}
-                        className="inline-block flex-shrink-0"
-                        width={12}
-                        height={12}
-                        loading="lazy"
-                        aria-hidden="true"
-                      />
-                      <span className="truncate">{show.location}</span>
-                    </p>
+          {nodes.map(({ show, gapDays, connectorPx }, index) => {
+            const { day, month } = formatDateRange(
+              show.dateRange.start,
+              show.dateRange.end
+            );
+            const isLast = index === nodes.length - 1;
+            const isNext = index === 0;
+
+            return (
+              <div key={show.id}>
+                {/* Connector — height approximates the gap to the previous date */}
+                <div
+                  className="relative flex gap-4 sm:gap-6"
+                  style={{ height: connectorPx }}
+                >
+                  <div className="relative w-4 flex-shrink-0">
+                    <div className="absolute left-1/2 -translate-x-1/2 inset-y-0 w-px bg-white/15" />
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-[9px] font-bold tracking-[0.25em] text-white/30 uppercase">
+                      {formatGap(gapDays)}
+                    </span>
                   </div>
                 </div>
-              </motion.div>
+
+                {/* Event node */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  viewport={{ once: true }}
+                  className="relative flex gap-4 sm:gap-6"
+                >
+                  <div className="relative w-4 flex-shrink-0">
+                    <div
+                      className={`absolute left-1/2 -translate-x-1/2 top-0 w-px bg-white/15 ${
+                        isLast ? "h-5" : "bottom-0"
+                      }`}
+                    />
+                    <span
+                      className={`relative z-10 mx-auto mt-3 block h-4 w-4 rounded-full border-2 ${
+                        isNext
+                          ? "border-white bg-white"
+                          : "border-white/50 bg-background"
+                      }`}
+                    />
+                  </div>
+
+                  <div className="flex-grow group">
+                    <div className="relative bg-white/[0.04] border border-white/10 rounded-2xl p-3 md:p-6 flex flex-row items-center gap-3 md:gap-6 transition-all duration-500 group-hover:bg-white/[0.08] group-hover:border-white/30 group-hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)]">
+                      {/* Date */}
+                      <div className="flex-shrink-0 text-center min-w-[50px] md:min-w-[80px] border-r border-white/10 pr-3 md:pr-6">
+                        <div className="text-xl md:text-4xl font-black text-white">
+                          {day}
+                        </div>
+                        <div className="text-[8px] md:text-[10px] font-bold text-muted-foreground tracking-[0.15em] md:tracking-[0.2em]">
+                          {month}
+                        </div>
+                      </div>
+
+                      {/* Venue Info */}
+                      <div className="flex-grow min-w-0">
+                        <h3 className="text-sm md:text-xl font-bold text-white mb-0.5 md:mb-1 tracking-tight truncate">
+                          {show.venue}
+                        </h3>
+                        <p className="text-muted-foreground text-[10px] md:text-xs uppercase tracking-wider flex items-center gap-1.5 truncate">
+                          <img
+                            src={`https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${emojiToCodepoint(
+                              show.flag
+                            )}.svg`}
+                            alt={`${show.flag} flag`}
+                            className="inline-block flex-shrink-0"
+                            width={12}
+                            height={12}
+                            loading="lazy"
+                            aria-hidden="true"
+                          />
+                          <span className="truncate">{show.location}</span>
+                        </p>
+                      </div>
+
+                      {isNext && (
+                        <div className="flex-shrink-0 self-start">
+                          <span className="text-[8px] font-bold tracking-[0.2em] text-black bg-white rounded-full px-2 py-1 uppercase">
+                            Next
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
             );
           })}
         </div>
@@ -152,7 +262,7 @@ export default function UpcomingShows() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
           className="text-center mt-16"
         >

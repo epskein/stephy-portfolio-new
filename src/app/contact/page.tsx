@@ -1,13 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-const socialLinks = [
-  { name: "Instagram", href: "#", handle: "@stephylongueira" },
-  { name: "SoundCloud", href: "#", handle: "stephylongueira" },
-  { name: "Spotify", href: "#", handle: "Stephy Longueira" },
-  { name: "YouTube", href: "#", handle: "Stephy Longueira" },
-];
+import { socialLinks, SocialIcon } from "@/components/socials";
 
 export default function ContactPage() {
   return (
@@ -58,10 +52,10 @@ export default function ContactPage() {
                     Agent: John Marlow
                   </p>
                   <a
-                    href="mailto:booking@stephylongueira.com"
+                    href="mailto:bookings@stephylongueira.com"
                     className="text-xs sm:text-sm md:text-base font-bold text-white hover:text-white/60 transition-colors tracking-tight block break-all"
                   >
-                    booking@stephylongueira.com
+                    bookings@stephylongueira.com
                   </a>
                 </div>
 
@@ -101,12 +95,15 @@ export default function ContactPage() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
-                    className="flex flex-col sm:flex-row items-center justify-between py-3 px-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white hover:text-black transition-all group gap-1 sm:gap-0"
+                    className="flex items-center justify-between py-3 px-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white hover:text-black transition-all group gap-3"
                   >
-                    <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest opacity-60 group-hover:opacity-100">
-                      {social.name}
+                    <span className="flex items-center gap-3 min-w-0">
+                      <SocialIcon name={social.name} className="w-5 h-5 flex-shrink-0" />
+                      <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest opacity-60 group-hover:opacity-100">
+                        {social.name}
+                      </span>
                     </span>
-                    <span className="text-[10px] sm:text-xs font-bold tracking-tight opacity-80 group-hover:opacity-100">
+                    <span className="text-[10px] sm:text-xs font-bold tracking-tight opacity-80 group-hover:opacity-100 truncate">
                       {social.handle}
                     </span>
                   </motion.a>

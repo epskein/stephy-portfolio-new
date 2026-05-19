@@ -15,12 +15,11 @@ export default function VenuesGrid({ logos }: VenuesGridProps) {
           {logos.map((logo, index) => (
             <motion.div
               key={logo}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: (index % 10) * 0.05 }}
               viewport={{ once: true }}
-              whileHover={{ scale: 1.1 }}
-              className="relative w-full aspect-square grayscale hover:grayscale-0 transition-all duration-500 flex items-center justify-center p-2"
+              className="relative w-full aspect-square grayscale flex items-center justify-center p-2"
             >
               <Image
                 src={`/assets/venues/${logo}`}
