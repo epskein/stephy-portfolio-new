@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Lexend_Tera } from "next/font/google";
 import "./globals.css";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import PageLoader from "@/components/PageLoader";
 
 const lexendTera = Lexend_Tera({
   subsets: ["latin"],
@@ -13,7 +10,8 @@ const lexendTera = Lexend_Tera({
 
 export const metadata: Metadata = {
   title: "Stephy Longueira | DJ & Artist",
-  description: "Official portfolio of Stephy Longueira - DJ, Producer, and Artist. Book for events, view upcoming shows, and explore the gallery.",
+  description:
+    "Official portfolio of Stephy Longueira - DJ, Producer, and Artist. Book for events, view upcoming shows, and explore the gallery.",
   keywords: ["DJ", "Stephy Longueira", "Artist", "Music", "Events", "Booking"],
   icons: {
     icon: [
@@ -25,7 +23,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Stephy Longueira | DJ & Artist",
-    description: "Official portfolio of Stephy Longueira - DJ, Producer, and Artist.",
+    description:
+      "Official portfolio of Stephy Longueira - DJ, Producer, and Artist.",
     type: "website",
   },
 };
@@ -37,12 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${lexendTera.variable} antialiased`}>
-        <PageLoader />
-        <Navigation />
-        <main>{children}</main>
-        <Footer />
-      </body>
+      <body className={`${lexendTera.variable} antialiased`}>{children}</body>
     </html>
   );
 }
