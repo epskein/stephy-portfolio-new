@@ -11,7 +11,7 @@ export default function VenuesGrid({ logos }: VenuesGridProps) {
   return (
     <section className="pb-20">
       <div className="container mx-auto px-6">
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-12 items-center justify-items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-6 sm:gap-10 lg:gap-12 items-center justify-items-center">
           {logos.map((logo, index) => (
             <motion.div
               key={logo}

@@ -138,9 +138,9 @@ export default function UpcomingShows() {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto mb-14 sm:mb-16"
         >
-          <div className="relative h-40">
+          <div className="relative h-24 sm:h-40">
             {/* Inset track so end markers/labels stay in bounds */}
-            <div className="absolute left-6 right-6 top-20">
+            <div className="absolute left-6 right-6 top-12 sm:top-20">
               {/* Line */}
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-white/30 via-white/15 to-white/25" />
 
@@ -150,8 +150,8 @@ export default function UpcomingShows() {
                   <span className="absolute inline-flex h-full w-full rounded-full bg-white/25 animate-ping" />
                   <span className="relative h-2.5 w-2.5 rounded-full bg-white" />
                 </span>
-                <span className="absolute left-0 top-0 -translate-x-1/2 w-px h-8 bg-white/20" />
-                <div className="absolute top-9 left-0">
+                <span className="absolute left-0 top-0 -translate-x-1/2 w-px h-8 bg-white/20 hidden sm:block" />
+                <div className="absolute top-9 left-0 hidden sm:block">
                   <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-white whitespace-nowrap">
                     Today
                   </div>
@@ -194,13 +194,15 @@ export default function UpcomingShows() {
                     />
                     {/* Connector stick */}
                     <span
-                      className={`absolute left-0 -translate-x-1/2 w-px bg-white/20 ${
+                      className={`absolute left-0 -translate-x-1/2 w-px bg-white/20 hidden sm:block ${
                         above ? "bottom-0 h-8" : "top-0 h-8"
                       }`}
                     />
                     {/* Label */}
                     <div
-                      className={`absolute ${above ? "bottom-9" : "top-9"}`}
+                      className={`absolute hidden sm:block ${
+                        above ? "bottom-9" : "top-9"
+                      }`}
                       style={{ transform: `translateX(-${marker.pos}%)` }}
                     >
                       <div className="text-[10px] font-bold uppercase tracking-tight text-white leading-tight whitespace-nowrap">

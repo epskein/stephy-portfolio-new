@@ -63,11 +63,11 @@ export default function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <motion.span
-                  className={`text-xs uppercase tracking-[0.2em] relative ${
+                  className={`text-xs uppercase tracking-[0.2em] relative whitespace-nowrap ${
                     pathname === link.href
                       ? "text-white"
                       : "text-muted-foreground hover:text-white"
@@ -150,7 +150,7 @@ export default function Navigation() {
                 >
                   <Link
                     href={link.href}
-                    className={`text-lg sm:text-xl uppercase tracking-[0.1em] sm:tracking-[0.2em] text-center ${
+                    className={`text-lg sm:text-xl uppercase tracking-[0.1em] sm:tracking-[0.2em] text-center whitespace-nowrap ${
                       pathname === link.href
                         ? "text-white"
                         : "text-muted-foreground hover:text-white"
