@@ -34,8 +34,6 @@ const upcomingShows = [
   },
 ];
 
-const MS_PER_DAY = 86400000;
-
 function emojiToCodepoint(emoji: string) {
   return Array.from(emoji)
     .map((char) => char.codePointAt(0)?.toString(16))
@@ -66,43 +64,40 @@ function formatDateRange(start: string, end?: string) {
   return { day, month };
 }
 
-function formatFullDate(d: Date) {
-  const day = d.getDate().toString().padStart(2, "0");
-  const month = d.toLocaleString("en-US", { month: "short" }).toUpperCase();
-  return `${day} ${month} ${d.getFullYear()}`;
-}
-
-// Human-friendly approximation of a gap in days.
-function formatGap(days: number) {
-  if (days <= 1) return "1 DAY";
-  if (days < 14) return `${days} DAYS`;
-  if (days < 60) return `≈ ${Math.round(days / 7)} WEEKS`;
-  return `≈ ${Math.round(days / 30)} MONTHS`;
-}
-
 export default function UpcomingShows() {
   const [today] = useState(startOfToday);
 
-  // Sort by date, then measure the gap before each event so the connector
-  // segments approximate each show's position along the year.
   const sorted = [...upcomingShows].sort(
     (a, b) =>
       parseDate(a.dateRange.start).getTime() -
       parseDate(b.dateRange.start).getTime()
   );
 
-  let previous = today;
-  const nodes = sorted.map((show) => {
-    const start = parseDate(show.dateRange.start);
-    const gapDays = Math.max(
-      0,
-      Math.round((start.getTime() - previous.getTime()) / MS_PER_DAY)
-    );
-    previous = start;
-    // Connector length scales with the real gap (clamped so it stays clean).
-    const connectorPx = Math.min(240, Math.max(56, 48 + gapDays));
-    return { show, gapDays, connectorPx };
-  });
+  // Timeline overview maths: position events from TODAY to the last event.
+  const todayMs = today.getTime();
+  const lastMs = parseDate(
+    sorted[sorted.length - 1].dateRange.start
+  ).getTime();
+  const rangeMs = Math.max(1, lastMs - todayMs);
+  const pct = (ms: number) =>
+    Math.min(100, Math.max(0, ((ms - todayMs) / rangeMs) * 100));
+
+  const markers = sorted.map((show) => ({
+    show,
+    pos: pct(parseDate(show.dateRange.start).getTime()),
+    ...formatDateRange(show.dateRange.start, show.dateRange.end),
+  }));
+
+  // Month boundaries that fall within the timeline range (context ticks).
+  const monthTicks: { pos: number; label: string }[] = [];
+  let cursor = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+  while (cursor.getTime() <= lastMs) {
+    monthTicks.push({
+      pos: pct(cursor.getTime()),
+      label: cursor.toLocaleString("en-US", { month: "short" }).toUpperCase(),
+    });
+    cursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1);
+  }
 
   return (
     <section id="upcoming-shows" className="relative py-24 bg-background">
@@ -135,125 +130,141 @@ export default function UpcomingShows() {
           </p>
         </motion.div>
 
-        {/* Timeline */}
-        <div className="relative max-w-3xl mx-auto">
-          {/* TODAY marker */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="relative flex gap-4 sm:gap-6"
-          >
-            <div className="relative w-4 flex-shrink-0">
-              <div className="absolute left-1/2 -translate-x-1/2 top-6 bottom-0 w-px bg-white/15" />
-              <span className="relative z-10 mx-auto mt-2 flex h-4 w-4 items-center justify-center">
-                <span className="absolute inline-flex h-full w-full rounded-full bg-white/30 animate-ping" />
-                <span className="relative h-3 w-3 rounded-full bg-white" />
-              </span>
-            </div>
-            <div className="pb-2">
-              <div className="text-[10px] font-bold tracking-[0.25em] text-white/50 uppercase">
-                Today
-              </div>
-              <div className="text-sm md:text-base font-bold text-white tracking-tight">
-                {formatFullDate(today)}
-              </div>
-            </div>
-          </motion.div>
+        {/* Horizontal timeline overview */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto mb-14 sm:mb-16"
+        >
+          <div className="relative h-40">
+            {/* Inset track so end markers/labels stay in bounds */}
+            <div className="absolute left-6 right-6 top-20">
+              {/* Line */}
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-white/30 via-white/15 to-white/25" />
 
-          {nodes.map(({ show, gapDays, connectorPx }, index) => {
+              {/* TODAY marker */}
+              <div className="absolute top-0" style={{ left: "0%" }}>
+                <span className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 flex h-4 w-4 items-center justify-center">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-white/25 animate-ping" />
+                  <span className="relative h-2.5 w-2.5 rounded-full bg-white" />
+                </span>
+                <span className="absolute left-0 top-0 -translate-x-1/2 w-px h-8 bg-white/20" />
+                <div className="absolute top-9 left-0">
+                  <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-white whitespace-nowrap">
+                    Today
+                  </div>
+                </div>
+              </div>
+
+              {/* Month context ticks */}
+              {monthTicks.map((tick) => (
+                <div
+                  key={tick.label + tick.pos}
+                  className="absolute top-0"
+                  style={{ left: `${tick.pos}%` }}
+                >
+                  <span className="absolute left-0 top-0 -translate-x-1/2 w-px h-1.5 bg-white/15" />
+                  <span
+                    className="absolute top-2.5 text-[8px] font-bold tracking-[0.15em] text-white/25 whitespace-nowrap"
+                    style={{ transform: `translateX(-${tick.pos}%)` }}
+                  >
+                    {tick.label}
+                  </span>
+                </div>
+              ))}
+
+              {/* Event markers */}
+              {markers.map((marker, index) => {
+                const above = index % 2 === 0;
+                return (
+                  <div
+                    key={marker.show.id}
+                    className="absolute top-0 group"
+                    style={{ left: `${marker.pos}%` }}
+                  >
+                    {/* Dot */}
+                    <span
+                      className={`absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 h-3.5 w-3.5 rounded-full border-2 transition-colors ${
+                        index === 0
+                          ? "border-white bg-white"
+                          : "border-white/60 bg-background group-hover:border-white"
+                      }`}
+                    />
+                    {/* Connector stick */}
+                    <span
+                      className={`absolute left-0 -translate-x-1/2 w-px bg-white/20 ${
+                        above ? "bottom-0 h-8" : "top-0 h-8"
+                      }`}
+                    />
+                    {/* Label */}
+                    <div
+                      className={`absolute ${above ? "bottom-9" : "top-9"}`}
+                      style={{ transform: `translateX(-${marker.pos}%)` }}
+                    >
+                      <div className="text-[10px] font-bold uppercase tracking-tight text-white leading-tight whitespace-nowrap">
+                        {marker.show.venue}
+                      </div>
+                      <div className="text-[8px] font-bold tracking-[0.15em] text-white/40 whitespace-nowrap">
+                        {marker.day} {marker.month}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Event cards */}
+        <div className="max-w-4xl mx-auto space-y-3 md:space-y-6">
+          {upcomingShows.map((show, index) => {
             const { day, month } = formatDateRange(
               show.dateRange.start,
               show.dateRange.end
             );
-            const isLast = index === nodes.length - 1;
-            const isNext = index === 0;
-
             return (
-              <div key={show.id}>
-                {/* Connector — height approximates the gap to the previous date */}
-                <div
-                  className="relative flex gap-4 sm:gap-6"
-                  style={{ height: connectorPx }}
-                >
-                  <div className="relative w-4 flex-shrink-0">
-                    <div className="absolute left-1/2 -translate-x-1/2 inset-y-0 w-px bg-white/15" />
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-[9px] font-bold tracking-[0.25em] text-white/30 uppercase">
-                      {formatGap(gapDays)}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Event node */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  viewport={{ once: true }}
-                  className="relative flex gap-4 sm:gap-6"
-                >
-                  <div className="relative w-4 flex-shrink-0">
-                    <div
-                      className={`absolute left-1/2 -translate-x-1/2 top-0 w-px bg-white/15 ${
-                        isLast ? "h-5" : "bottom-0"
-                      }`}
-                    />
-                    <span
-                      className={`relative z-10 mx-auto mt-3 block h-4 w-4 rounded-full border-2 ${
-                        isNext
-                          ? "border-white bg-white"
-                          : "border-white/50 bg-background"
-                      }`}
-                    />
-                  </div>
-
-                  <div className="flex-grow group">
-                    <div className="relative bg-white/[0.04] border border-white/10 rounded-2xl p-3 md:p-6 flex flex-row items-center gap-3 md:gap-6 transition-all duration-500 group-hover:bg-white/[0.08] group-hover:border-white/30 group-hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)]">
-                      {/* Date */}
-                      <div className="flex-shrink-0 text-center min-w-[50px] md:min-w-[80px] border-r border-white/10 pr-3 md:pr-6">
-                        <div className="text-xl md:text-4xl font-black text-white">
-                          {day}
-                        </div>
-                        <div className="text-[8px] md:text-[10px] font-bold text-muted-foreground tracking-[0.15em] md:tracking-[0.2em]">
-                          {month}
-                        </div>
-                      </div>
-
-                      {/* Venue Info */}
-                      <div className="flex-grow min-w-0">
-                        <h3 className="text-sm md:text-xl font-bold text-white mb-0.5 md:mb-1 tracking-tight truncate">
-                          {show.venue}
-                        </h3>
-                        <p className="text-muted-foreground text-[10px] md:text-xs uppercase tracking-wider flex items-center gap-1.5 truncate">
-                          <img
-                            src={`https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${emojiToCodepoint(
-                              show.flag
-                            )}.svg`}
-                            alt={`${show.flag} flag`}
-                            className="inline-block flex-shrink-0"
-                            width={12}
-                            height={12}
-                            loading="lazy"
-                            aria-hidden="true"
-                          />
-                          <span className="truncate">{show.location}</span>
-                        </p>
-                      </div>
-
-                      {isNext && (
-                        <div className="flex-shrink-0 self-start">
-                          <span className="text-[8px] font-bold tracking-[0.2em] text-black bg-white rounded-full px-2 py-1 uppercase">
-                            Next
-                          </span>
-                        </div>
-                      )}
+              <motion.div
+                key={show.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -4 }}
+                className="group relative"
+              >
+                <div className="relative bg-white/[0.04] border border-white/10 rounded-2xl p-3 md:p-6 flex flex-row items-center gap-3 md:gap-6 transition-all duration-500 group-hover:bg-white/[0.08] group-hover:border-white/30 group-hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)]">
+                  {/* Date - always left */}
+                  <div className="flex-shrink-0 text-center min-w-[50px] md:min-w-[80px] border-r border-white/10 pr-3 md:pr-6">
+                    <div className="text-xl md:text-4xl font-black text-white">{day}</div>
+                    <div className="text-[8px] md:text-[10px] font-bold text-muted-foreground tracking-[0.15em] md:tracking-[0.2em]">
+                      {month}
                     </div>
                   </div>
-                </motion.div>
-              </div>
+
+                  {/* Venue Info - always right */}
+                  <div className="flex-grow min-w-0">
+                    <h3 className="text-sm md:text-xl font-bold text-white mb-0.5 md:mb-1 tracking-tight truncate">
+                      {show.venue}
+                    </h3>
+                    <p className="text-muted-foreground text-[10px] md:text-xs uppercase tracking-wider flex items-center gap-1.5 truncate">
+                      <img
+                        src={`https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${emojiToCodepoint(
+                          show.flag
+                        )}.svg`}
+                        alt={`${show.flag} flag`}
+                        className="inline-block flex-shrink-0"
+                        width={12}
+                        height={12}
+                        loading="lazy"
+                        aria-hidden="true"
+                      />
+                      <span className="truncate">{show.location}</span>
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
             );
           })}
         </div>
@@ -262,7 +273,7 @@ export default function UpcomingShows() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
           className="text-center mt-16"
         >
