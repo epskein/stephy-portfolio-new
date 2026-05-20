@@ -149,9 +149,9 @@ export default function UpcomingShows({ shows }: { shows?: ShowItem[] }) {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto mb-14 sm:mb-16"
         >
-          <div className="relative h-24 sm:h-40">
+          <div className="relative h-32 sm:h-40">
             {/* Inset track so end markers/labels stay in bounds */}
-            <div className="absolute left-6 right-6 top-12 sm:top-20">
+            <div className="absolute left-6 right-6 top-16 sm:top-20">
               {/* Line */}
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-white/30 via-white/15 to-white/25" />
 
@@ -205,21 +205,21 @@ export default function UpcomingShows({ shows }: { shows?: ShowItem[] }) {
                     />
                     {/* Connector stick */}
                     <span
-                      className={`absolute left-0 -translate-x-1/2 w-px bg-white/20 hidden sm:block ${
-                        above ? "bottom-0 h-8" : "top-0 h-8"
+                      className={`absolute left-0 -translate-x-1/2 w-px bg-white/20 ${
+                        above ? "bottom-0 h-7 sm:h-8" : "top-0 h-7 sm:h-8"
                       }`}
                     />
                     {/* Label */}
                     <div
-                      className={`absolute hidden sm:block ${
-                        above ? "bottom-9" : "top-9"
+                      className={`absolute ${
+                        above ? "bottom-8 sm:bottom-9" : "top-8 sm:top-9"
                       }`}
                       style={{ transform: `translateX(-${marker.pos}%)` }}
                     >
-                      <div className="text-[10px] font-bold uppercase tracking-tight text-white leading-tight whitespace-nowrap">
+                      <div className="text-[9px] sm:text-[10px] font-bold uppercase tracking-tight text-white leading-tight whitespace-nowrap">
                         {marker.show.venue}
                       </div>
-                      <div className="text-[8px] font-bold tracking-[0.15em] text-white/40 whitespace-nowrap">
+                      <div className="text-[7px] sm:text-[8px] font-bold tracking-[0.15em] text-white/40 whitespace-nowrap">
                         {marker.day} {marker.month}
                       </div>
                     </div>
