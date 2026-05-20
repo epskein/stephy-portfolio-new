@@ -130,23 +130,24 @@ export default function Navigation() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-background/98 backdrop-blur-xl"
+              transition={{ duration: 0.2 }}
+              className="absolute inset-0 bg-background/95"
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <motion.nav
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
               className="absolute right-0 top-0 bottom-0 w-full max-w-sm flex flex-col items-center justify-center gap-8 p-8"
             >
               {navLinks.map((link, index) => (
                 <motion.div
                   key={link.href}
-                  initial={{ opacity: 0, x: 50 }}
+                  initial={{ opacity: 0, x: 30 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 50 }}
-                  transition={{ delay: index * 0.1 }}
+                  exit={{ opacity: 0, x: 30 }}
+                  transition={{ duration: 0.2, delay: index * 0.04 }}
                 >
                   <Link
                     href={link.href}

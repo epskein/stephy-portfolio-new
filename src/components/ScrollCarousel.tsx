@@ -121,8 +121,12 @@ export default function ScrollCarousel({
             animation: carousel-marquee 55s linear infinite;
             will-change: transform;
           }
-          .marquee-wrap:hover .marquee-track {
-            animation-play-state: paused;
+          /* Only mouse-capable devices pause on hover — keeps the strip
+             auto-scrolling on touch screens (no sticky :hover after a tap). */
+          @media (hover: hover) and (pointer: fine) {
+            .marquee-wrap:hover .marquee-track {
+              animation-play-state: paused;
+            }
           }
           @media (prefers-reduced-motion: reduce) {
             .marquee-track {
