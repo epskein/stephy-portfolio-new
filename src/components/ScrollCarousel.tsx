@@ -1,7 +1,12 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { useEffect, useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
 import Image from "next/image";
 
 export interface CarouselImage {
@@ -11,7 +16,7 @@ export interface CarouselImage {
 }
 
 // Kept exported for backwards-compat with existing callers; the component
-// now has a single mode (page-scroll-driven parallax) regardless.
+// chooses its mode based on viewport size now.
 export type CarouselAnimation = "hover" | "autoscroll";
 
 interface ScrollCarouselProps {
@@ -20,6 +25,7 @@ interface ScrollCarouselProps {
 }
 
 const CARD_HEIGHT = "h-[200px] sm:h-[260px] md:h-[320px]";
+const CARD_CLASS = `group relative flex-shrink-0 ${CARD_HEIGHT} rounded-[2rem] overflow-hidden border border-white/10 transition-[border-color,box-shadow] duration-300 ease-out hover:border-white/30 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]`;
 
 /* --------------------------- Card image ------------------------------- */
 function CardImage({ image, index }: { image: CarouselImage; index: number }) {
@@ -70,7 +76,7 @@ function EdgeFades() {
   );
 }
 
-/* --------------------------- Parallax row ----------------------------- */
+/* ----------------- Desktop: scroll-linked parallax row ---------------- */
 function ParallaxRow({
   images,
   x,
@@ -80,7 +86,6 @@ function ParallaxRow({
   x: MotionValue<string>;
   keyPrefix: string;
 }) {
-  // Duplicate the set so cards remain visible across the full translate range.
   const cards = [...images, ...images];
   return (
     <motion.div
@@ -90,7 +95,7 @@ function ParallaxRow({
       {cards.map((image, index) => (
         <div
           key={`${keyPrefix}-${image.src}-${index}`}
-          className={`group relative flex-shrink-0 ${CARD_HEIGHT} rounded-[2rem] overflow-hidden border border-white/10 transition-[border-color,box-shadow] duration-300 ease-out hover:border-white/30 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]`}
+          className={CARD_CLASS}
         >
           <CardImage image={image} index={index} />
         </div>
@@ -99,26 +104,117 @@ function ParallaxRow({
   );
 }
 
+/* --------- Mobile: continuous auto-scroll, pause on touch ------------- */
+function AutoScrollRow({
+  images,
+  direction,
+  keyPrefix,
+}: {
+  images: CarouselImage[];
+  direction: "left" | "right";
+  keyPrefix: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const pausedRef = useRef(false);
+  const resumeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Two identical sets in a row — when scrollLeft crosses one set's width,
+  // we jump back by exactly that width and the visual is unchanged.
+  const cards = [...images, ...images];
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    let rafId = 0;
+    let lastTime = performance.now();
+    let initialized = false;
+    const speed = 35; // px / second
+
+    const tick = (now: number) => {
+      const dt = Math.min((now - lastTime) / 1000, 0.05);
+      lastTime = now;
+
+      const setWidth = el.scrollWidth / 2;
+      if (!initialized && setWidth > 0) {
+        // Start the rightward row at one set-width so it has room to count down.
+        el.scrollLeft = direction === "right" ? setWidth : 0;
+        initialized = true;
+      }
+
+      if (
+        initialized &&
+        !pausedRef.current &&
+        el.scrollWidth > el.clientWidth
+      ) {
+        const delta = (direction === "right" ? -1 : 1) * speed * dt;
+        let next = el.scrollLeft + delta;
+        if (next >= setWidth) next -= setWidth;
+        else if (next < 0) next += setWidth;
+        el.scrollLeft = next;
+      }
+
+      rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+    };
+  }, [direction]);
+
+  const handleTouchStart = () => {
+    pausedRef.current = true;
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current);
+      resumeTimeoutRef.current = null;
+    }
+  };
+  const handleTouchEnd = () => {
+    // Small delay so iOS momentum scrolling finishes naturally before the
+    // auto-scroll picks back up.
+    resumeTimeoutRef.current = setTimeout(() => {
+      pausedRef.current = false;
+      resumeTimeoutRef.current = null;
+    }, 800);
+  };
+
+  return (
+    <div
+      ref={ref}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
+      className="flex gap-4 overflow-x-auto scrollbar-hide"
+    >
+      {cards.map((image, index) => (
+        <div
+          key={`${keyPrefix}-${image.src}-${index}`}
+          className={CARD_CLASS}
+        >
+          <CardImage image={image} index={index} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* --------------------------- Main carousel ---------------------------- */
 export default function ScrollCarousel({ images }: ScrollCarouselProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
-  // The page's scroll position drives both rows. When the user stops
-  // scrolling, scrollYProgress stops changing, and the rows stop moving.
+  // Desktop parallax: rows move opposite directions, tied to page scroll.
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   });
-
-  // Two rows, opposite directions. The percentage is of each row's own
-  // width, so the same value works at any viewport size.
   const topRowX = useTransform(scrollYProgress, [0, 1], ["0%", "-35%"]);
   const bottomRowX = useTransform(scrollYProgress, [0, 1], ["-35%", "0%"]);
 
-  // Split images into two rows. If there are fewer images than expected,
-  // fall back to using the whole list for both rows.
   const half = Math.ceil(images.length / 2);
-  const topImages = images.slice(0, half).length > 0 ? images.slice(0, half) : images;
+  const topImages =
+    images.slice(0, half).length > 0 ? images.slice(0, half) : images;
   const bottomImages =
     images.slice(half).length > 0 ? images.slice(half) : images;
 
@@ -128,11 +224,48 @@ export default function ScrollCarousel({ images }: ScrollCarouselProps) {
       className="relative py-20 sm:py-24 overflow-hidden bg-black"
     >
       <SectionTitle />
-      <div className="relative space-y-4 sm:space-y-6">
-        <ParallaxRow images={topImages} x={topRowX} keyPrefix="top" />
-        <ParallaxRow images={bottomImages} x={bottomRowX} keyPrefix="bot" />
+
+      <div className="relative">
+        {/* Desktop / tablet: scroll-linked parallax */}
+        <div className="hidden md:block">
+          <ParallaxRow images={topImages} x={topRowX} keyPrefix="top-d" />
+          <div className="mt-6">
+            <ParallaxRow
+              images={bottomImages}
+              x={bottomRowX}
+              keyPrefix="bot-d"
+            />
+          </div>
+        </div>
+
+        {/* Mobile: continuous auto-scroll opposite directions, touch-pausable */}
+        <div className="md:hidden">
+          <AutoScrollRow
+            images={topImages}
+            direction="left"
+            keyPrefix="top-m"
+          />
+          <div className="mt-4">
+            <AutoScrollRow
+              images={bottomImages}
+              direction="right"
+              keyPrefix="bot-m"
+            />
+          </div>
+        </div>
+
         <EdgeFades />
       </div>
+
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </section>
   );
 }
