@@ -70,17 +70,6 @@ export default function ContactContent({
                   </a>
                 </div>
 
-                <div className="flex flex-col items-center gap-2 group">
-                  <h3 className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] mb-1">
-                    Press
-                  </h3>
-                  <a
-                    href="mailto:press@stephylongueira.com"
-                    className="text-xs sm:text-sm md:text-base font-bold text-white hover:text-white/60 transition-colors tracking-tight block break-all"
-                  >
-                    press@stephylongueira.com
-                  </a>
-                </div>
               </div>
             </motion.div>
 
