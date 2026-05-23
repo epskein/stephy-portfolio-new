@@ -23,7 +23,7 @@ export default async function Home() {
   return (
     <>
       <Hero />
-      <ScrollCarousel images={carouselImages} animation="autoscroll" />
+      <ScrollCarousel images={carouselImages} />
       <UpcomingShows shows={shows} />
     </>
   );
