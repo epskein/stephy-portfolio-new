@@ -116,6 +116,10 @@ function AutoScrollRow({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const pausedRef = useRef(false);
+  // Sub-pixel position accumulator. Browsers round scrollLeft to whole
+  // pixels, so a per-frame increment of ~0.6px would be lost forever if we
+  // read scrollLeft back each tick — we keep precision in this ref instead.
+  const posRef = useRef(0);
   const resumeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Two identical sets in a row — when scrollLeft crosses one set's width,
@@ -138,7 +142,8 @@ function AutoScrollRow({
       const setWidth = el.scrollWidth / 2;
       if (!initialized && setWidth > 0) {
         // Start the rightward row at one set-width so it has room to count down.
-        el.scrollLeft = direction === "right" ? setWidth : 0;
+        posRef.current = direction === "right" ? setWidth : 0;
+        el.scrollLeft = posRef.current;
         initialized = true;
       }
 
@@ -148,9 +153,10 @@ function AutoScrollRow({
         el.scrollWidth > el.clientWidth
       ) {
         const delta = (direction === "right" ? -1 : 1) * speed * dt;
-        let next = el.scrollLeft + delta;
+        let next = posRef.current + delta;
         if (next >= setWidth) next -= setWidth;
         else if (next < 0) next += setWidth;
+        posRef.current = next;
         el.scrollLeft = next;
       }
 
@@ -175,6 +181,8 @@ function AutoScrollRow({
     // Small delay so iOS momentum scrolling finishes naturally before the
     // auto-scroll picks back up.
     resumeTimeoutRef.current = setTimeout(() => {
+      // Re-sync our accumulator with wherever the user dragged to.
+      if (ref.current) posRef.current = ref.current.scrollLeft;
       pausedRef.current = false;
       resumeTimeoutRef.current = null;
     }, 800);
