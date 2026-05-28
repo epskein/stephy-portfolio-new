@@ -99,6 +99,13 @@ export default function UpcomingShows({ shows }: { shows?: ShowItem[] }) {
     ...formatDateRange(show.dateRange.start, show.dateRange.end),
   }));
 
+  // When there are more than four shows, stack labels into a second row on
+  // each side of the line so adjacent events don't visually overlap.
+  const slotsPerSide = markers.length > 4 ? 2 : 1;
+  const timelineHeight =
+    slotsPerSide === 2 ? "h-48 sm:h-56" : "h-32 sm:h-40";
+  const trackTop = slotsPerSide === 2 ? "top-24 sm:top-28" : "top-16 sm:top-20";
+
   // Month boundaries that fall within the timeline range (context ticks).
   const monthTicks: { pos: number; label: string }[] = [];
   let cursor = new Date(today.getFullYear(), today.getMonth() + 1, 1);
@@ -149,9 +156,9 @@ export default function UpcomingShows({ shows }: { shows?: ShowItem[] }) {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto mb-14 sm:mb-16"
         >
-          <div className="relative h-32 sm:h-40">
+          <div className={`relative ${timelineHeight}`}>
             {/* Inset track so end markers/labels stay in bounds */}
-            <div className="absolute left-6 right-6 top-16 sm:top-20">
+            <div className={`absolute left-6 right-6 ${trackTop}`}>
               {/* Line */}
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-white/30 via-white/15 to-white/25" />
 
@@ -189,6 +196,18 @@ export default function UpcomingShows({ shows }: { shows?: ShowItem[] }) {
               {/* Event markers */}
               {markers.map((marker, index) => {
                 const above = index % 2 === 0;
+                // 0 = near the line, 1 = the second row further out.
+                const slot = Math.floor(index / 2) % slotsPerSide;
+                const stickHClass =
+                  slot === 0 ? "h-7 sm:h-8" : "h-14 sm:h-16";
+                const labelOffsetClass =
+                  slot === 0
+                    ? above
+                      ? "bottom-8 sm:bottom-9"
+                      : "top-8 sm:top-9"
+                    : above
+                      ? "bottom-[60px] sm:bottom-[68px]"
+                      : "top-[60px] sm:top-[68px]";
                 return (
                   <div
                     key={marker.show.id}
@@ -206,14 +225,12 @@ export default function UpcomingShows({ shows }: { shows?: ShowItem[] }) {
                     {/* Connector stick */}
                     <span
                       className={`absolute left-0 -translate-x-1/2 w-px bg-white/20 ${
-                        above ? "bottom-0 h-7 sm:h-8" : "top-0 h-7 sm:h-8"
-                      }`}
+                        above ? "bottom-0" : "top-0"
+                      } ${stickHClass}`}
                     />
                     {/* Label */}
                     <div
-                      className={`absolute ${
-                        above ? "bottom-8 sm:bottom-9" : "top-8 sm:top-9"
-                      }`}
+                      className={`absolute ${labelOffsetClass}`}
                       style={{ transform: `translateX(-${marker.pos}%)` }}
                     >
                       <div className="text-[9px] sm:text-[10px] font-bold uppercase tracking-tight text-white leading-tight whitespace-nowrap">
