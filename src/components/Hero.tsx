@@ -4,7 +4,15 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 
-export default function Hero() {
+export default function Hero({
+  ctaPrimary = "Book Now",
+  ctaSecondary = "Upcoming Shows",
+  bookingEmail = "bookings@stephylongueira.com",
+}: {
+  ctaPrimary?: string;
+  ctaSecondary?: string;
+  bookingEmail?: string;
+} = {}) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -64,12 +72,12 @@ export default function Hero() {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <motion.a
-            href="mailto:bookings@stephylongueira.com"
+            href={`mailto:${bookingEmail}`}
             whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,1)" }}
             whileTap={{ scale: 0.95 }}
             className="px-10 py-4 bg-white text-black font-bold uppercase tracking-[0.2em] text-[10px] rounded-full transition-all duration-300 min-w-[180px]"
           >
-            Book Now
+            {ctaPrimary}
           </motion.a>
           <motion.a
             href="#upcoming-shows"
@@ -77,7 +85,7 @@ export default function Hero() {
             whileTap={{ scale: 0.95 }}
             className="px-10 py-4 border border-white/20 text-white font-bold uppercase tracking-[0.2em] text-[10px] rounded-full transition-all duration-300 backdrop-blur-md min-w-[180px]"
           >
-            Upcoming Shows
+            {ctaSecondary}
           </motion.a>
         </motion.div>
       </motion.div>

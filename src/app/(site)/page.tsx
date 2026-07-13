@@ -2,29 +2,33 @@ import Hero from "@/components/Hero";
 import ScrollCarousel from "@/components/ScrollCarousel";
 import UpcomingShows from "@/components/UpcomingShows";
 import { getCarouselImages as getFsCarouselImages } from "@/lib/carouselImages";
-import {
-  getCarouselImages as getSanityCarouselImages,
-  getShows,
-} from "@/sanity/queries";
+import { getCarouselImages, getShows, getText, pick } from "@/lib/content";
 
 export const revalidate = 60;
 
 export default async function Home() {
-  const [shows, sanityCarousel, fsCarousel] = await Promise.all([
+  const [shows, dbCarousel, fsCarousel, text] = await Promise.all([
     getShows(),
-    getSanityCarouselImages(),
+    getCarouselImages(),
     getFsCarouselImages(),
+    getText(["home", "global"]),
   ]);
 
-  // Use Sanity carousel images once added; otherwise the bundled photos.
-  const carouselImages =
-    sanityCarousel.length > 0 ? sanityCarousel : fsCarousel;
+  // Prefer the photos Stephy flagged for the home strip; otherwise the bundled ones.
+  const carouselImages = dbCarousel.length > 0 ? dbCarousel : fsCarousel;
 
   return (
     <>
-      <Hero />
+      <Hero
+        ctaPrimary={pick(text, "home", "hero_cta_primary", "Book Now")}
+        ctaSecondary={pick(text, "home", "hero_cta_secondary", "Upcoming Shows")}
+        bookingEmail={pick(text, "global", "booking_email", "bookings@stephylongueira.com")}
+      />
       <ScrollCarousel images={carouselImages} />
-      <UpcomingShows shows={shows} />
+      <UpcomingShows
+        shows={shows}
+        subtitle={pick(text, "home", "shows_subtitle", "Catch Stephy live at these upcoming events worldwide.")}
+      />
     </>
   );
 }

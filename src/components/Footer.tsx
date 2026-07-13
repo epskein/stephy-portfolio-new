@@ -20,8 +20,12 @@ const quickLinks = [
 
 export default function Footer({
   socialLinks,
+  bookingEmail = "bookings@stephylongueira.com",
+  tagline = "Bringing electrifying performances to venues worldwide. Available for bookings and collaborations.",
 }: {
   socialLinks?: SocialLink[];
+  bookingEmail?: string;
+  tagline?: string;
 }) {
   const links =
     socialLinks && socialLinks.length > 0 ? socialLinks : fallbackSocialLinks;
@@ -41,8 +45,7 @@ export default function Footer({
               />
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
-              Bringing electrifying performances to venues worldwide.
-              Available for bookings and collaborations.
+              {tagline}
             </p>
           </div>
 
@@ -88,10 +91,10 @@ export default function Footer({
             <p className="text-muted-foreground text-sm pt-2">
               For bookings:{" "}
               <a
-                href="mailto:bookings@stephylongueira.com"
+                href={`mailto:${bookingEmail}`}
                 className="text-white hover:underline transition-colors"
               >
-                bookings@stephylongueira.com
+                {bookingEmail}
               </a>
             </p>
           </div>

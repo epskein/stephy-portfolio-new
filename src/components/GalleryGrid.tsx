@@ -99,7 +99,7 @@ export default function GalleryGrid({ images, categories }: GalleryGridProps) {
           {images.length === 0 && (
             <div className="text-center py-20">
               <p className="text-muted-foreground uppercase tracking-widest text-xs">
-                Add images to public/assets/gallery/[category]/ to see them here.
+                Add photos in the manage portal to see them here.
               </p>
             </div>
           )}

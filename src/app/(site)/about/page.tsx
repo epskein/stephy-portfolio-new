@@ -1,5 +1,5 @@
 import AboutContent from "@/components/AboutContent";
-import { getAboutPage } from "@/sanity/queries";
+import { getAboutPage } from "@/lib/content";
 
 export const revalidate = 60;
 

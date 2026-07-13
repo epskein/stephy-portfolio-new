@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import type { SanityAbout } from "@/sanity/queries";
+import type { About as SanityAbout } from "@/lib/content";
 
 // Fallback content — used until the About Page is filled in the Sanity Studio.
 const FALLBACK_IMAGE = "/assets/StephyLongueira6.jpg";

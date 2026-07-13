@@ -21,8 +21,14 @@ const fallbackReleases: ReleaseItem[] = [
 
 export default function MusicContent({
   releases,
+  title = "MUSIC",
+  subtitle = "Releases, remixes, and mixes from Stephy Longueira.",
+  footerNote = "More releases coming soon.",
 }: {
   releases?: ReleaseItem[];
+  title?: string;
+  subtitle?: string;
+  footerNote?: string;
 }) {
   const items = releases && releases.length > 0 ? releases : fallbackReleases;
 
@@ -32,10 +38,10 @@ export default function MusicContent({
       <section className="py-16">
         <div className="container mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-4 uppercase tracking-tight">
-            <span className="gradient-text">MUSIC</span>
+            <span className="gradient-text">{title}</span>
           </h1>
           <p className="text-muted-foreground max-w-xl mx-auto uppercase tracking-widest text-[10px]">
-            Releases, remixes, and mixes from Stephy Longueira.
+            {subtitle}
           </p>
         </div>
       </section>
@@ -96,7 +102,7 @@ export default function MusicContent({
           </div>
 
           <p className="text-center text-muted-foreground uppercase tracking-widest text-[10px] mt-16">
-            More releases coming soon.
+            {footerNote}
           </p>
         </div>
       </section>

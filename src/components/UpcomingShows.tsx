@@ -73,7 +73,13 @@ function formatDateRange(start: string, end?: string) {
   return { day, month };
 }
 
-export default function UpcomingShows({ shows }: { shows?: ShowItem[] }) {
+export default function UpcomingShows({
+  shows,
+  subtitle = "Catch Stephy live at these upcoming events worldwide.",
+}: {
+  shows?: ShowItem[];
+  subtitle?: string;
+}) {
   const [today] = useState(startOfToday);
 
   const events = shows && shows.length > 0 ? shows : fallbackShows;
@@ -144,7 +150,7 @@ export default function UpcomingShows({ shows }: { shows?: ShowItem[] }) {
             <span className="text-foreground sm:ml-3">SHOWS</span>
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto uppercase tracking-widest text-[10px]">
-            Catch Stephy live at these upcoming events worldwide.
+            {subtitle}
           </p>
         </motion.div>
 

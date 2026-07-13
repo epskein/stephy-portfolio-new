@@ -9,8 +9,14 @@ import {
 
 export default function ContactContent({
   socialLinks,
+  subtitle = "For bookings, collaborations, or inquiries.",
+  bookingAgent = "Agent: John Marlow",
+  bookingEmail = "bookings@stephylongueira.com",
 }: {
   socialLinks?: SocialLink[];
+  subtitle?: string;
+  bookingAgent?: string;
+  bookingEmail?: string;
 }) {
   const links =
     socialLinks && socialLinks.length > 0 ? socialLinks : fallbackSocialLinks;
@@ -32,7 +38,7 @@ export default function ContactContent({
               <span className="text-white">TOUCH</span>
             </h1>
             <p className="text-muted-foreground max-w-xl mx-auto uppercase tracking-widest text-[10px]">
-              For bookings, collaborations, or inquiries.
+              {subtitle}
             </p>
           </motion.div>
         </div>
@@ -60,13 +66,13 @@ export default function ContactContent({
                     Booking
                   </h3>
                   <p className="text-white/60 text-[10px] uppercase tracking-widest mb-2 font-bold">
-                    Agent: John Marlow
+                    {bookingAgent}
                   </p>
                   <a
-                    href="mailto:bookings@stephylongueira.com"
+                    href={`mailto:${bookingEmail}`}
                     className="text-xs sm:text-sm md:text-base font-bold text-white hover:text-white/60 transition-colors tracking-tight block break-all"
                   >
-                    bookings@stephylongueira.com
+                    {bookingEmail}
                   </a>
                 </div>
 
